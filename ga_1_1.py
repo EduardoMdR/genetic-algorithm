@@ -11,6 +11,7 @@
 
 # bibliotecas
 import numpy as np
+import math
 
 # Variáveis globais estáticas
 cromossomos = 44
@@ -33,3 +34,16 @@ if(verbose):
   print(geracao_atual)
 
 
+# Passo 2:
+fitness = []
+for filho in range(populacao):
+  x = (geracao_atual[filho][:int(cromossomos/2)] * constante_normalizacao) - 100
+  y = (geracao_atual[filho][int(cromossomos/2):] * constante_normalizacao) - 100
+  # aux = math.pow(math.sin(math.pow(math.pow(x,2)+math.pow(y,2),0.5)),2)
+  # aux2 = 1.0 + 0.001 * (math.pow(math.pow(x,2)+math.pow(y,2),2))
+  # fitness.append(aux/aux2)
+  fitness.append(np.random.randint(low=1, high=5))
+  # Preciso arrimar a equação de fitness
+
+if(verbose):
+  print(fitness)
