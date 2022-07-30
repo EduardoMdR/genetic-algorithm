@@ -19,7 +19,7 @@ populacao = 10      # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
-verbose = 0         # variavel utizada para debugar
+verbose = 1         # variavel utizada para debugar
 constante_normalizacao = 0.0000476837278899989
 
 # def main(args):
@@ -31,10 +31,11 @@ for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
 
 if(verbose):
-  print(geracao_atual)
+  print("Geração incial da população: \n", geracao_atual)
 
 
 # Passo 2:
+roleta = 0
 fitness = []
 for filho in range(populacao):
   x = (geracao_atual[filho][:int(cromossomos/2)] * constante_normalizacao) - 100
@@ -42,8 +43,15 @@ for filho in range(populacao):
   # aux = math.pow(math.sin(math.pow(math.pow(x,2)+math.pow(y,2),0.5)),2)
   # aux2 = 1.0 + 0.001 * (math.pow(math.pow(x,2)+math.pow(y,2),2))
   # fitness.append(aux/aux2)
-  fitness.append(np.random.randint(low=1, high=5))
+  aux = np.random.randint(low=1, high=5)
+  fitness.append(aux)
+  roleta += aux
   # Preciso arrimar a equação de fitness
 
 if(verbose):
-  print(fitness)
+  print("Fitness de cada filho: \n", fitness)
+  print("Roleta: ", roleta)
+
+# Passo 3:
+pai_x = np.random.randint(low=1, high=roleta)
+print(pai_x)
