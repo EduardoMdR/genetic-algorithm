@@ -6,8 +6,9 @@
 # Passo 3: Seleciono dois pais (roleta) e gero dois filhos
 # Passo 4: Aplico crossover (se taxa_cro = verdade)
 # Passo 5: Aplico mutação (se taxa_mut = verdade)
+#          Faço isso 50 vezes para completar minha população
 # Passo 6: Repito esse processo até completar todas as gerações
-# Fim: vou ter o indivíduo melhor qualificado como minha resposta
+# Fim: vou ter o indivíduo melhor qualificado (da última geração) como minha resposta
 
 # bibliotecas
 import numpy as np
@@ -19,7 +20,7 @@ populacao = 10      # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
-verbose = 1         # variavel utizada para debugar
+verbose = 0         # variavel utizada para debugar
 constante_normalizacao = 0.0000476837278899989
 
 # def main(args):
@@ -32,7 +33,6 @@ for filho in range(populacao):
 
 if(verbose):
   print("Geração incial da população: \n", geracao_atual)
-
 
 # Passo 2:
 roleta = 0
@@ -54,4 +54,10 @@ if(verbose):
 
 # Passo 3:
 pai_x = np.random.randint(low=1, high=roleta)
-print(pai_x)
+pai_y = np.random.randint(low=1, high=roleta)
+pai_atual = 0
+while(pai_atual):
+  
+
+for index in range(populacao):
+  # Realizar o procedimento anterior len(populacao) vezes
