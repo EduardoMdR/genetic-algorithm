@@ -10,9 +10,11 @@
 # Passo 6: Repito esse processo até completar todas as gerações
 # Fim: vou ter o indivíduo melhor qualificado (da última geração) como minha resposta
 
+
 # bibliotecas
 import numpy as np
 import math
+
 
 # Variáveis globais estáticas
 cromossomos = 44
@@ -23,8 +25,23 @@ taxa_cro = 0.65
 verbose = 0         # variavel utizada para debugar
 constante_normalizacao = 0.0000476837278899989
 
+
+# Funções
+def escolheFilho(pai, populacao, fitness):
+  # print("Fitness do pai escolhido: ", pai)
+  aux_roleta = 0
+  for index in range(populacao):
+    aux_roleta += int(fitness[index])
+    if(pai <= aux_roleta):
+      pai = geracao_atual[index]
+      break
+  
+  return pai
+
+
 # def main(args):
 print("Algoritmo genético 1-1")
+
 
 # Passo 1:
 geracao_atual = []
@@ -33,6 +50,7 @@ for filho in range(populacao):
 
 if(verbose):
   print("Geração incial da população: \n", geracao_atual)
+
 
 # Passo 2:
 roleta = 0
@@ -52,20 +70,17 @@ if(verbose):
   print("Fitness de cada filho: \n", fitness)
   print("Roleta: ", roleta)
 
-# Passo 3:
-pai_x = np.random.randint(low=1, high=roleta)
-pai_y = np.random.randint(low=1, high=roleta)
-aux_roleta = 0
-print("1º pai_x : ", pai_x)
 
-for index in range(populacao):
-  aux_roleta += int(fitness[index])
-  if(pai_x <= aux_roleta):
-    pai_x = geracao_atual[index]
-    break
-  
-print("Geração incial da população: \n", geracao_atual)
-print("Fitness de cada filho: \n", fitness)
-print("Roleta: ", roleta)
-print("2º pai_x : ", pai_x)
+# Passo 3:
+pai_x = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
+pai_y = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
+
+# Passo 4
+
+
+# print("Geração incial da população: \n", geracao_atual)
+# print("Fitness de cada filho: \n", fitness)
+# print("Roleta: ", roleta)
+# print("2º pai_x : ", pai_x)
+# print("2º pai_y : ", pai_y)
 # Realizar o procedimento anterior len(populacao) vezes
