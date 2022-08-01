@@ -16,7 +16,7 @@ import math
 
 # Variáveis globais estáticas
 cromossomos = 44
-populacao = 10      # 100
+populacao = 5       # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
@@ -55,9 +55,17 @@ if(verbose):
 # Passo 3:
 pai_x = np.random.randint(low=1, high=roleta)
 pai_y = np.random.randint(low=1, high=roleta)
-pai_atual = 0
-while(pai_atual):
-  
+aux_roleta = 0
+print("1º pai_x : ", pai_x)
 
 for index in range(populacao):
-  # Realizar o procedimento anterior len(populacao) vezes
+  aux_roleta += int(fitness[index])
+  if(pai_x <= aux_roleta):
+    pai_x = geracao_atual[index]
+    break
+  
+print("Geração incial da população: \n", geracao_atual)
+print("Fitness de cada filho: \n", fitness)
+print("Roleta: ", roleta)
+print("2º pai_x : ", pai_x)
+# Realizar o procedimento anterior len(populacao) vezes
