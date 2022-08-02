@@ -23,7 +23,7 @@ populacao = 5       # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
-verbose = 0         # variavel utizada para debugar (funciona em escala pequena)
+verbose = 1         # variavel utizada para debugar (funciona em escala pequena)
 constante_normalizacao = 0.0000476837278899989
 
 
@@ -79,7 +79,9 @@ pai_y = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
 if(verbose):
   print('Pai X escolhido: ', pai_x)
   print('Pai Y escolhido: ', pai_y)
-# Passo 4
+
+
+# Passo 4 (Preciso melhorar)
 # posso utilizar um randomizador para determinar o ponto de crossover
 crossover = np.random.randint(100)
 copia_pai_x, copia_pai_y = [], []
@@ -98,10 +100,17 @@ if(verbose):
   print('Pai Y pós crossover: ', pai_y)
 
 
+# Passo 5
+print('mutação', taxa_mut*1000)
+for index in range(cromossomos):
+  mutacao = np.random.randint(1000)
+  if(mutacao < (taxa_mut*1000)):
+    pai_x[index] = (np.random.randint(2))
+    if(verbose): print('Aconteceu mutação em pai_x: ', index+1)
 
-# print("Geração incial da população: \n", geracao_atual)
-# print("Fitness de cada filho: \n", fitness)
-# print("Roleta: ", roleta)
-# print("2º pai_x : ", pai_x)
-# print("2º pai_y : ", pai_y)
+if(verbose):
+  print('pai_x final: ', pai_x)
+  print('pai_y final: ', pai_y)
+
+
 # Realizar o procedimento anterior len(populacao) vezes
