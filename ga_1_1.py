@@ -12,6 +12,7 @@
 
 
 # bibliotecas
+from audioop import cross
 import numpy as np
 import math
 
@@ -22,7 +23,7 @@ populacao = 5       # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
-verbose = 0         # variavel utizada para debugar
+verbose = 0         # variavel utizada para debugar (funciona em escala pequena)
 constante_normalizacao = 0.0000476837278899989
 
 
@@ -75,7 +76,27 @@ if(verbose):
 pai_x = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
 pai_y = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
 
+if(verbose):
+  print('Pai X escolhido: ', pai_x)
+  print('Pai Y escolhido: ', pai_y)
 # Passo 4
+# posso utilizar um randomizador para determinar o ponto de crossover
+crossover = np.random.randint(100)
+copia_pai_x, copia_pai_y = [], []
+
+if(crossover < (taxa_cro*100)):
+  # print('Aconteceu crossover')
+  copia_pai_x = np.array_split(pai_x,2)
+  copia_pai_y = np.array_split(pai_y,2)
+
+  pai_x = np.concatenate((copia_pai_x[0], copia_pai_y[1]), axis=None)
+  pai_y = np.concatenate((copia_pai_x[1], copia_pai_y[0]), axis=None)
+
+if(verbose):
+  if(crossover < (taxa_cro*100)): print('Houve crossover')
+  print('Pai X pós crossover: ', pai_x)
+  print('Pai Y pós crossover: ', pai_y)
+
 
 
 # print("Geração incial da população: \n", geracao_atual)
