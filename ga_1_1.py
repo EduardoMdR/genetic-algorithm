@@ -23,7 +23,7 @@ populacao = 5       # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
-verbose = 1         # variavel utizada para debugar (funciona em escala pequena)
+verbose = 0         # variavel utizada para debugar (funciona em escala pequena)
 constante_normalizacao = 0.0000476837278899989
 
 
@@ -39,6 +39,13 @@ def escolheFilho(pai, populacao, fitness):
   
   return pai
 
+def mutacaoGene(pai, taxa_mut, cromossomos):
+  for index in range(cromossomos):
+    mutacao = np.random.randint(1000)
+    if(mutacao <= (taxa_mut*1000)):
+      pai[index] = (np.random.randint(2))
+      if(verbose): print('Aconteceu mutação em pai('') : ', index+1)
+  return pai
 
 # def main(args):
 print("Algoritmo genético 1-1")
@@ -86,7 +93,7 @@ if(verbose):
 crossover = np.random.randint(100)
 copia_pai_x, copia_pai_y = [], []
 
-if(crossover < (taxa_cro*100)):
+if(crossover <= (taxa_cro*100)):
   # print('Aconteceu crossover')
   copia_pai_x = np.array_split(pai_x,2)
   copia_pai_y = np.array_split(pai_y,2)
@@ -101,12 +108,9 @@ if(verbose):
 
 
 # Passo 5
-print('mutação', taxa_mut*1000)
-for index in range(cromossomos):
-  mutacao = np.random.randint(1000)
-  if(mutacao < (taxa_mut*1000)):
-    pai_x[index] = (np.random.randint(2))
-    if(verbose): print('Aconteceu mutação em pai_x: ', index+1)
+pai_x = mutacaoGene(pai_x, taxa_mut, cromossomos)
+pai_y = mutacaoGene(pai_y, taxa_mut, cromossomos)
+
 
 if(verbose):
   print('pai_x final: ', pai_x)
