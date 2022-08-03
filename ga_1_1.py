@@ -49,15 +49,21 @@ def mutacaoGene(pai, taxa_mut, cromossomos):
 
 # def main(args):
 print("Algoritmo genético 1-1")
-
+arquivoTxt = open('resposta.txt', 'w')
+arquivoTxt.write('Algoritmo genético 1-1 \n')
+arquivoTxt.write('Inicio do algoritmo \n\n')
 
 # Passo 1:
 geracao_atual = []
 for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
 
-if(verbose):
-  print("Geração incial da população: \n", geracao_atual)
+
+arquivoTxt.write("População inicial:\n")
+for i in geracao_atual:
+  # repr() transforma variável em string
+  arquivoTxt.write("filho:" + repr(i) + "\n")
+
 
 # Montando as gerações
 for i1 in range(geracoes):
@@ -130,3 +136,5 @@ for i1 in range(geracoes):
   if(verbose): print('Nova geração: ', geracao_atual)
 
 # Realizar o procedimento anterior len(populacao) vezes
+
+arquivoTxt.close
