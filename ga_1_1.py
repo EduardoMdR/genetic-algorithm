@@ -23,14 +23,12 @@ populacao = 4       # 100
 geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
-verbose = 0         # variavel utizada para debugar (funciona em escala pequena)
 constante_normalizacao = 0.0000476837278899989
 
 
 # Funções
 # Recebo um valor (min=1, max=roleta), e retorno qual o pai (e seu id) referente à essa número
 def escolheFilho(pai, populacao, fitness):
-  # print("Fitness do pai escolhido: ", pai)
   aux_roleta = 0
   for index in range(populacao):
     aux_roleta += int(fitness[index])
@@ -40,12 +38,12 @@ def escolheFilho(pai, populacao, fitness):
   
   return pai, index
 
-def mutacaoGene(pai, taxa_mut, cromossomos):
+def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
     if(mutacao <= (taxa_mut*1000)):
       pai[index] = (np.random.randint(2))
-      if(verbose): print('Aconteceu mutação em pai('') : ', index+1)
+      arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
   return pai
 
 # def main(args):
@@ -65,12 +63,12 @@ index = 0
 for x in geracao_atual:
   # repr() transforma variável em string
   index += 1
-  arquivoTxt.write('filho '+ repr(index) + ':' + repr(x) + '\n')
+  arquivoTxt.write('filho '+ repr(index) + ': ' + repr(x) + '\n')
 arquivoTxt.write('\n')
 
 # Montando as gerações
 for i1 in range(geracoes):
-  arquivoTxt.write(repr(i1+1) + 'º Geração\n')
+  arquivoTxt.write('\n' + repr(i1+1) + 'º Geração\n')
   nova_geracao = []
 
   # Passo 2:
@@ -90,7 +88,7 @@ for i1 in range(geracoes):
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
 
-  arquivoTxt.write('\nInicio da reprodução: \n')
+  arquivoTxt.write('Inicio da reprodução: \n')
   # Percorrendo uma geração população/2 vezes
   for i2 in range(int(populacao/2)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
@@ -116,28 +114,28 @@ for i1 in range(geracoes):
       pai_x = np.concatenate((copia_pai_x[0], copia_pai_y[1]), axis=None)
       pai_y = np.concatenate((copia_pai_x[1], copia_pai_y[0]), axis=None)
 
-    if(verbose):
-      if(crossover < (taxa_cro*100)): print('Houve crossover')
-      print('Pai X pós crossover: ', pai_x)
-      print('Pai Y pós crossover: ', pai_y)
+      arquivoTxt.write('Houve crossover\n')
+    else:
+      arquivoTxt.write('Não houve crossover\n')
 
 
     # Passo 5
-    pai_x = mutacaoGene(pai_x, taxa_mut, cromossomos)
-    pai_y = mutacaoGene(pai_y, taxa_mut, cromossomos)
-
-
-    if(verbose):
-      print('pai_x final: ', pai_x)
-      print('pai_y final: ', pai_y)
+    pai_x = mutacaoGene(pai_x, 'X', taxa_mut, cromossomos)
+    pai_y = mutacaoGene(pai_y, 'Y', taxa_mut, cromossomos)
+    arquivoTxt.write('\n')
+    arquivoTxt.write('Filho 1 final: '+ repr(pai_x) + '\n')
+    arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
 
     nova_geracao.append(pai_x)
     nova_geracao.append(pai_y)
 
   geracao_atual = nova_geracao
-  if(verbose): print('Nova geração: ', nova_geracao)
-  if(verbose): print('Nova geração: ', geracao_atual)
 
-# Realizar o procedimento anterior len(populacao) vezes
+escolhido_id = fitness[0]
+for index in range(populacao):
+  if(escolhido_id < fitness[index]): escolhido_id = fitness[index]
+
+escolhido = escolheFilho(escolhido_id, populacao, fitness)
+arquivoTxt.write('\n\n\nIndividuo mais qualificado: '+ repr(escolhido) + '\n')
 
 arquivoTxt.close
