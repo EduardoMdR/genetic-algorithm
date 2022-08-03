@@ -28,6 +28,7 @@ constante_normalizacao = 0.0000476837278899989
 
 
 # Funções
+# Recebo um valor (min=1, max=roleta), e retorno qual o pai (e seu id) referente à essa número
 def escolheFilho(pai, populacao, fitness):
   # print("Fitness do pai escolhido: ", pai)
   aux_roleta = 0
@@ -37,7 +38,7 @@ def escolheFilho(pai, populacao, fitness):
       pai = geracao_atual[index]
       break
   
-  return pai
+  return pai, index
 
 def mutacaoGene(pai, taxa_mut, cromossomos):
   for index in range(cromossomos):
@@ -49,7 +50,7 @@ def mutacaoGene(pai, taxa_mut, cromossomos):
 
 # def main(args):
 print("Algoritmo genético 1-1")
-arquivoTxt = open('resposta.txt', 'w')
+arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
 arquivoTxt.write('Algoritmo genético 1-1 \n')
 arquivoTxt.write('Inicio do algoritmo \n\n')
 
@@ -59,16 +60,19 @@ for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
 
 
-arquivoTxt.write("População inicial:\n")
-for i in geracao_atual:
+arquivoTxt.write('População inicial:\n')
+index = 0
+for x in geracao_atual:
   # repr() transforma variável em string
-  arquivoTxt.write("filho:" + repr(i) + "\n")
-
+  index += 1
+  arquivoTxt.write('filho '+ repr(index) + ':' + repr(x) + '\n')
+arquivoTxt.write('\n')
 
 # Montando as gerações
 for i1 in range(geracoes):
-  if(verbose): print(i1+1,'º Geração')
+  arquivoTxt.write(repr(i1+1) + 'º Geração\n')
   nova_geracao = []
+
   # Passo 2:
   roleta = 0
   fitness = []
@@ -83,21 +87,20 @@ for i1 in range(geracoes):
     roleta += aux
     # Preciso arrimar a equação de fitness
 
-  if(verbose):
-    print("Fitness de cada filho: \n", fitness)
-    print("Roleta: ", roleta)
+  arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
+  arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
 
+  arquivoTxt.write('\nInicio da reprodução: \n')
   # Percorrendo uma geração população/2 vezes
   for i2 in range(int(populacao/2)):
-    if(verbose): print(i2+1,'º pais a serem escolhidos')
-    # pai_x = []
-    # Passo 3:
-    pai_x = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
-    pai_y = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
+    arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
 
-    if(verbose):
-      print('Pai X escolhido: ', pai_x)
-      print('Pai Y escolhido: ', pai_y)
+    # Passo 3:
+    pai_x, pai_x_id = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
+    pai_y, pai_y_id = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
+
+    arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
+    arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
 
     # Passo 4 (Preciso melhorar)
