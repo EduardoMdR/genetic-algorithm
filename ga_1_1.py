@@ -115,17 +115,14 @@ for i1 in range(geracoes):
     # Passo 4 (Preciso melhorar)
     # posso utilizar um randomizador para determinar o ponto de crossover
     crossover = np.random.randint(100)
-    copia_pai_x, copia_pai_y = [], []
-
     if(crossover <= (taxa_cro*100)):
       # print('Aconteceu crossover')
-      copia_pai_x = np.array_split(pai_x,2)
-      copia_pai_y = np.array_split(pai_y,2)
+      qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
+      
+      pai_x = np.concatenate((pai_x[:qtd_cro], pai_y[qtd_cro:]), axis=None)
+      pai_y = np.concatenate((pai_x[qtd_cro:], pai_y[:qtd_cro]), axis=None)
 
-      pai_x = np.concatenate((copia_pai_x[0], copia_pai_y[1]), axis=None)
-      pai_y = np.concatenate((copia_pai_x[1], copia_pai_y[0]), axis=None)
-
-      arquivoTxt.write('Houve crossover\n')
+      arquivoTxt.write('Houve crossover (no cormossomo ' + str(qtd_cro) + ')\n')
     else:
       arquivoTxt.write('Não houve crossover\n')
 
