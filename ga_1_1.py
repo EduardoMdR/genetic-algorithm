@@ -12,9 +12,10 @@
 # Fim: vou ter o indivíduo melhor qualificado (da última geração) como minha resposta
 
 
-# bibliotecas
+### bibliotecas ###
 import numpy as np
 # import math
+import matplotlib.pyplot as plt
 
 
 # Variáveis globais estáticas
@@ -26,7 +27,7 @@ taxa_cro = 0.65
 constante_normalizacao = 0.0000476837278899989
 
 
-# Funções
+### Funções ###
 # Recebo um valor (min=1, max=roleta), e retorno qual o pai (e seu id) referente à essa número
 def escolheFilho(pai, populacao, fitness):
   aux_roleta = 0
@@ -38,6 +39,7 @@ def escolheFilho(pai, populacao, fitness):
   
   return pai, index
 
+# Verifica para cada bit, se vai ou não aconecer uma mutação
 def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
@@ -46,7 +48,16 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
   return pai
 
-# def main(args):
+# Salva valores para plotar no gráfico
+def imprimirGrafico(fitness):
+  melhor = fitness[0]
+  for index in range(len(fitness)):
+    if(melhor < fitness[index]): melhor = fitness[index]
+
+  return melhor
+
+
+### def main(args): ###
 print("Algoritmo genético 1-1")
 arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
 arquivoTxt.write('Algoritmo genético 1-1 \n')
@@ -54,9 +65,9 @@ arquivoTxt.write('Inicio do algoritmo \n\n')
 
 # Passo 1:
 geracao_atual = []
+melhor_filho = []
 for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
-
 
 arquivoTxt.write('População inicial:\n')
 index = 0
@@ -130,6 +141,7 @@ for i1 in range(geracoes):
     nova_geracao.append(pai_y)
 
   geracao_atual = nova_geracao
+  melhor_filho.append(imprimirGrafico(fitness))
 
 escolhido_id = fitness[0]
 for index in range(populacao):
@@ -139,3 +151,13 @@ escolhido = escolheFilho(escolhido_id, populacao, fitness)
 arquivoTxt.write('\n\n\nIndividuo mais qualificado: '+ repr(escolhido) + '\n')
 
 arquivoTxt.close
+
+# Mostrando resultado em grafico
+qtdGeracoes = []
+for index in range(geracoes):
+  qtdGeracoes.append('Geração '+ str(index+1))
+
+print(qtdGeracoes)
+print(melhor_filho)
+plt.plot(qtdGeracoes, melhor_filho)
+plt.show()
