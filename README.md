@@ -16,3 +16,11 @@ Módulo de reprodução:
 - Operadores: Crossover de um ponto com mutação
 - Taxa de mutação: 0,008
 - taxa de crossover: 0,65
+
+### Rodar o programa
+
+> Preciso ter instalado a biblioteca Matplotlib
+``` pip install matplotlib ```
+
+> Preciso do python
+``` py .\ga_1_1.py ```
