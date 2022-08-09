@@ -155,9 +155,12 @@ arquivoTxt.close
 # Mostrando resultado em grafico
 qtdGeracoes = []
 for index in range(geracoes):
-  qtdGeracoes.append('Geração '+ str(index+1))
+  qtdGeracoes.append(str(index+1))
 
-print(qtdGeracoes)
-print(melhor_filho)
+plt.figure(figsize=(12,6))
 plt.plot(qtdGeracoes, melhor_filho)
+plt.ylabel("Fitness", size = 16)
+plt.xlabel("Gerações", size = 16)
+plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
+plt.grid(True)
 plt.show()
