@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import random
 
 populacao = 4
 cromossomos = 44
@@ -31,5 +32,6 @@ eq_aux, eq_aux2 = 0, 0
 eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
 eq_aux = (math.pow(math.sin(eq_aux),2))
 eq_aux2 = 1.0 + (0.0001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
-
-print("Fitness final", (1 - (eq_aux/eq_aux2)))
+fitness = (1 - (eq_aux/eq_aux2))
+print('Fitness final', fitness)
+print('Roleta: ',random.uniform(0.01,fitness))
