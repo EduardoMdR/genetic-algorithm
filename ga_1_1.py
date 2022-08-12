@@ -32,13 +32,12 @@ constante_normalizacao = 0.0000476837278899989
 ### Funções ###
 # Recebo um valor (min=0, max=roleta), e retorno qual o pai (e seu id) referente à essa número
 def escolheFilho(pai, populacao, fitness):
-  aux_roleta = 0
+  aux_roleta = 0.0
   for index in range(populacao):
-    aux_roleta += int(fitness[index])
+    aux_roleta += float(fitness[index])
     if(pai <= aux_roleta):
       pai = geracao_atual[index]
       break
-  
   return pai, index
 
 # Verifica para cada bit, se vai ou não aconecer uma mutação
@@ -82,7 +81,7 @@ arquivoTxt.write('\n')
 
 # Montando as gerações
 for i1 in range(geracoes):
-  arquivoTxt.write('\n' + repr(i1+1) + 'º Geração\n')
+  arquivoTxt.write('\n\n\n#################### ' + repr(i1+1) + 'º Geração ####################\n')
   nova_geracao = []
 
 
@@ -97,15 +96,9 @@ for i1 in range(geracoes):
       if(aux_idx < int(cromossomos/2)): x += str(i)
       else: y += str(i)
       aux_idx += 1
-    
-    # print(geracao_atual[filho])
-    print('x',x)
-    print('y',y)
+
     x = (int(x, 2) * constante_normalizacao) - 100
     y = (int(y, 2) * constante_normalizacao) - 100
-
-    print('x',x)
-    print('y',y)
 
     eq_aux, eq_aux2 = 0, 0
     eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
@@ -114,11 +107,11 @@ for i1 in range(geracoes):
     fitness.append((1 - (eq_aux/eq_aux2)))
     roleta += (1 - (eq_aux/eq_aux2))
 
-    print(roleta)
-
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
-  arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
+  melhor_filho.append(imprimirGrafico(fitness))
+  arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
+  arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
   arquivoTxt.write('Inicio da reprodução: \n')
   # Percorrendo uma geração população/2 vezes
   for i2 in range(int(populacao/2)):
@@ -157,7 +150,6 @@ for i1 in range(geracoes):
     nova_geracao.append(pai_y)
 
   geracao_atual = nova_geracao
-  melhor_filho.append(imprimirGrafico(fitness))
 
 escolhido_id = fitness[0]
 for index in range(populacao):
@@ -174,6 +166,7 @@ qtdGeracoes = []
 for index in range(geracoes):
   qtdGeracoes.append(str(index+1))
 
+# Imprimindo gráfico
 plt.figure(figsize=(12,6))
 plt.plot(qtdGeracoes, melhor_filho)
 plt.ylabel("Fitness", size = 16)
