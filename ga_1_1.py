@@ -151,12 +151,28 @@ for i1 in range(geracoes):
 
   geracao_atual = nova_geracao
 
+# Verificando qual é o melhor filho da última geração
 escolhido_id = fitness[0]
 for index in range(populacao):
   if(escolhido_id < fitness[index]): escolhido_id = fitness[index]
 
+arquivoTxt.write('\n\n\nMelhores individuos de cada geração:' + str(melhor_filho) + '\n\n')
 escolhido = escolheFilho(escolhido_id, populacao, fitness)
-arquivoTxt.write('\n\n\nIndividuo mais qualificado: '+ repr(escolhido) + '\n')
+arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolhido) + '\n')
+
+# Verificando qual é o melhor e o piro fitness de todas as gerações
+melhor_geracao, pior_geracao = melhor_filho[0], melhor_filho[0]
+melhor, pior = 0, 0
+for index in range(geracoes):
+  if melhor_geracao < melhor_filho[index]: 
+    melhor_geracao = melhor_filho[index]
+    melhor = index
+  if pior_geracao > melhor_filho[index]:
+    pior_geracao = melhor_filho[index]
+    pior = index
+
+arquivoTxt.write('Melhor geração: '+ repr(melhor + 1) + '\n')
+arquivoTxt.write('Pior geração: '+ repr(pior + 1) + '\n')
 
 arquivoTxt.close
 
