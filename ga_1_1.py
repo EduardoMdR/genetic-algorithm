@@ -20,11 +20,11 @@ import matplotlib.pyplot as plt
 
 
 # Variáveis globais estáticas
-cromossomos = 44
-populacao = 4       # 100
-geracoes = 4        # 40
-taxa_mut = 0.008
-taxa_cro = 0.65
+cromossomos = 44            # tamanho dos cromossomos de cada indivíduo
+populacao = 100             # Total de indívidios de uma geração
+geracoes = 40               # Total de gerações
+taxa_mut = 0.008            # Taxa que uma mutação acontece em algum gene (bit)
+taxa_cro = 0.65             # Taxa que o crossover acontece na reprodução
 constante_normalizacao = 0.0000476837278899989
 # constante_normalizacao = (200 / (math.pow(2,22) - 1))
 
@@ -45,7 +45,8 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
     if(mutacao <= (taxa_mut*1000)):
-      pai[index] = (np.random.randint(2))
+      if str(pai[index]) == '0': pai[index] = 1
+      else: pai[index] = 0
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
   return pai
 
@@ -126,7 +127,7 @@ for i1 in range(geracoes):
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
 
-    # Passo 4 (Preciso melhorar)
+    # Passo 4
     crossover = np.random.randint(100)
     if(crossover <= (taxa_cro*100)):
       qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
