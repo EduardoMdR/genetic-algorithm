@@ -14,7 +14,8 @@
 
 ### bibliotecas ###
 import numpy as np
-# import math
+import random
+import math
 import matplotlib.pyplot as plt
 
 
@@ -25,10 +26,11 @@ geracoes = 4        # 40
 taxa_mut = 0.008
 taxa_cro = 0.65
 constante_normalizacao = 0.0000476837278899989
+# constante_normalizacao = (200 / (math.pow(2,22) - 1))
 
 
 ### Funções ###
-# Recebo um valor (min=1, max=roleta), e retorno qual o pai (e seu id) referente à essa número
+# Recebo um valor (min=0, max=roleta), e retorno qual o pai (e seu id) referente à essa número
 def escolheFilho(pai, populacao, fitness):
   aux_roleta = 0
   for index in range(populacao):
@@ -63,6 +65,7 @@ arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
 arquivoTxt.write('Algoritmo genético 1-1 \n')
 arquivoTxt.write('Inicio do algoritmo \n\n')
 
+
 # Passo 1:
 geracao_atual = []
 melhor_filho = []
@@ -82,19 +85,36 @@ for i1 in range(geracoes):
   arquivoTxt.write('\n' + repr(i1+1) + 'º Geração\n')
   nova_geracao = []
 
+
   # Passo 2:
   roleta = 0
   fitness = []
+
   for filho in range(populacao):
-    x = (geracao_atual[filho][:int(cromossomos/2)] * constante_normalizacao) - 100
-    y = (geracao_atual[filho][int(cromossomos/2):] * constante_normalizacao) - 100
-    # aux = math.pow(math.sin(math.pow(math.pow(x,2)+math.pow(y,2),0.5)),2)
-    # aux2 = 1.0 + 0.001 * (math.pow(math.pow(x,2)+math.pow(y,2),2))
-    # fitness.append(aux/aux2)
-    aux = np.random.randint(low=1, high=5)
-    fitness.append(aux)
-    roleta += aux
-    # Preciso arrimar a equação de fitness
+    x, y = '', ''
+    aux_idx = 0
+    for i in (geracao_atual[filho]):
+      if(aux_idx < int(cromossomos/2)): x += str(i)
+      else: y += str(i)
+      aux_idx += 1
+    
+    # print(geracao_atual[filho])
+    print('x',x)
+    print('y',y)
+    x = (int(x, 2) * constante_normalizacao) - 100
+    y = (int(y, 2) * constante_normalizacao) - 100
+
+    print('x',x)
+    print('y',y)
+
+    eq_aux, eq_aux2 = 0, 0
+    eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
+    eq_aux = (math.pow(math.sin(eq_aux),2))
+    eq_aux2 = 1.0 + (0.0001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
+    fitness.append((1 - (eq_aux/eq_aux2)))
+    roleta += (1 - (eq_aux/eq_aux2))
+
+    print(roleta)
 
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
@@ -104,19 +124,18 @@ for i1 in range(geracoes):
   for i2 in range(int(populacao/2)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
 
+
     # Passo 3:
-    pai_x, pai_x_id = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
-    pai_y, pai_y_id = escolheFilho(np.random.randint(low=1, high=roleta), populacao, fitness)
+    pai_x, pai_x_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness)
+    pai_y, pai_y_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness)
 
     arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
 
     # Passo 4 (Preciso melhorar)
-    # posso utilizar um randomizador para determinar o ponto de crossover
     crossover = np.random.randint(100)
     if(crossover <= (taxa_cro*100)):
-      # print('Aconteceu crossover')
       qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
       
       pai_x = np.concatenate((pai_x[:qtd_cro], pai_y[qtd_cro:]), axis=None)
@@ -148,6 +167,7 @@ escolhido = escolheFilho(escolhido_id, populacao, fitness)
 arquivoTxt.write('\n\n\nIndividuo mais qualificado: '+ repr(escolhido) + '\n')
 
 arquivoTxt.close
+
 
 # Mostrando resultado em grafico
 qtdGeracoes = []
