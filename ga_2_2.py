@@ -99,10 +99,10 @@ for i1 in range(geracoes):
 
     eq_aux, eq_aux2 = 0, 0
     eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
-    eq_aux = (math.pow(math.sin(eq_aux),2))
-    eq_aux2 = 1.0 + (0.0001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
-    fitness.append((1 - (eq_aux/eq_aux2)))
-    roleta += (1 - (eq_aux/eq_aux2))
+    eq_aux = (math.pow(math.sin(eq_aux),2)) -0.5
+    eq_aux2 = 1.0 + (0.001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
+    fitness.append((0.5 - (eq_aux/eq_aux2)))
+    roleta += (0.5 - (eq_aux/eq_aux2))
 
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
   melhor_filho.append(imprimirGrafico(fitness))
