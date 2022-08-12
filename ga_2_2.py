@@ -49,7 +49,7 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
 # Salva valores para plotar no gráfico
 def imprimirGrafico(fitness):
   melhor = fitness[0]
-  for index in range(len(fitness)):
+  for index in range(populacao):
     if(melhor < fitness[index]): melhor = fitness[index]
 
   return melhor
@@ -89,9 +89,9 @@ for i1 in range(geracoes):
   for filho in range(populacao):
     x, y = '', ''
     aux_idx = 0
-    for i in (geracao_atual[filho]):
-      if(aux_idx < int(cromossomos/2)): x += str(i)
-      else: y += str(i)
+    for gene in (geracao_atual[filho]):
+      if(aux_idx < int(cromossomos/2)): x += str(gene)
+      else: y += str(gene)
       aux_idx += 1
 
     x = (int(x, 2) * constante_normalizacao) - 100
@@ -108,10 +108,22 @@ for i1 in range(geracoes):
   melhor_filho.append(imprimirGrafico(fitness))
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
+  # Salvar melhor filho para proxima geração
+  ja_salvo = 1  # Utilizado para não repetir esse processo caso tenha 2 melhores individuos 
+  for index_fitness in range(populacao):
+    if((melhor_filho[i1] == fitness[index_fitness]) and ja_salvo): 
+      nova_geracao.append(geracao_atual[index_fitness])
+      nova_geracao.append(geracao_atual[index_fitness])
+      arquivoTxt.write('Tudo certo: ' + str(fitness[index_fitness])  +'\n\n\n')
+      ja_salvo = 0
+      arquivoTxt.write('nova geração: ' + str(geracao_atual[index_fitness])  +'\n\n\n')
+      # Melhorar essa parte (não está funcionando totalmente)
+
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
   arquivoTxt.write('Inicio da reprodução: \n')
-  # Percorrendo uma geração população/2 vezes
-  for i2 in range(int(populacao/2)):
+  # Percorrendo uma geração ((população/2) -1) vezes 
+  # (-1 por que, já que o melhor filho passa direto para proxima) 
+  for i2 in range(int((populacao/2) - 1)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
 
 
