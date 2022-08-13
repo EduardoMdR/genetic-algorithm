@@ -191,3 +191,14 @@ plt.xlabel("Gerações", size = 16)
 plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
 plt.grid(True)
 plt.show()
+
+## O que fazer para mellhorar os GA’s
+
+# Ao invés de 1 gráfico, vou retornar 4 por GA
+# - 1º Melhor indivíduo de cada geração
+# - 2º Média dos N melhores indivíduos da geração
+# - 3º Média dos N Piores indivíduos da geração
+# - 4º Média de todos os indivíduos de cada geração
+
+# (em cada gráfico, marcar qual é o melhor indivíduo (ou média de indivíduos) 
+# e qual o pior indivíduo dentre todas as gerações)
