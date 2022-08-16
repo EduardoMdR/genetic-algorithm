@@ -83,7 +83,7 @@ arquivoTxt.write('Inicio do algoritmo \n\n')
 # Passo 1:
 geracao_atual = []
 melhor_filho = []
-
+media = []
 for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
 
@@ -122,9 +122,11 @@ for i1 in range(geracoes):
     eq_aux2 = 1.0 + (0.001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
     fitness.append((0.5 - (eq_aux/eq_aux2)))
     roleta += (0.5 - (eq_aux/eq_aux2))
-
+  
+  media.append(roleta / populacao)
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
   melhor_filho.append(imprimirGrafico(fitness))
+  arquivoTxt.write('Média da população:' + str(media[i1]) + '\n')
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
@@ -180,6 +182,9 @@ arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolh
 melhor, pior = 0, 0
 melhor, pior = encontrarMelhorEPior(geracoes, melhor_filho)
 
+melhor_media, pior_media = 0, 0
+melhor_media, pior_media = encontrarMelhorEPior(geracoes, media)
+
 
 arquivoTxt.write('Melhor geração: '+ repr(melhor + 1) + '\n')
 arquivoTxt.write('Pior geração: '+ repr(pior + 1) + '\n')
@@ -194,15 +199,21 @@ for index in range(geracoes):
 # Mostrando resultado em grafico
 # - 1º Melhor indivíduo de cada geração
 plt.figure(figsize=(12,6))
-plt.plot(qtdGeracoes, melhor_filho)                         # Plotar todas as gerações
-plt.plot(qtdGeracoes[melhor], melhor_filho[melhor], 'bo')   # Melhor indivíduo 
+plt.plot(qtdGeracoes, melhor_filho, label='Melhor indivíduo da população')                         # Plotar todas as gerações
+plt.plot(qtdGeracoes[melhor], melhor_filho[melhor], 'bo', label='Melhor/Pior indivíduo')   # Melhor indivíduo 
 plt.plot(qtdGeracoes[pior], melhor_filho[pior], 'bo')       # Pior indivíduo
+
+# - 2º Média de todos os indivíduos de cada geração
+plt.plot(qtdGeracoes, media, color='#f4d03f', label='Média da população')                         # Plotar todas as gerações
+plt.plot(qtdGeracoes[melhor_media], media[melhor_media], 'ro', label='Melhor/Pior população')   # Melhor indivíduo 
+plt.plot(qtdGeracoes[pior_media], media[pior_media], 'ro')       # Pior indivíduo
+
 plt.ylabel("Fitness", size = 16)
 plt.xlabel("Gerações", size = 16)
 plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
+plt.legend()
 plt.grid(True)
 plt.show()
 
-# - 2º Média dos N melhores indivíduos da geração
-# - 3º Média dos N Piores indivíduos da geração
-# - 4º Média de todos os indivíduos de cada geração
+# - 3º Média dos N melhores indivíduos da geração
+# - 4º Média dos N Piores indivíduos da geração
