@@ -58,6 +58,20 @@ def imprimirGrafico(fitness):
 
   return melhor
 
+# Recebe os fitness da gerações e retorna o pior e o melhor elemento
+def encontrarMelhorEPior(geracoes, melhor_filho):
+  melhor_geracao, pior_geracao = melhor_filho[0], melhor_filho[0]
+  melhor, pior = 0, 0
+
+  for index in range(geracoes):
+    if melhor_geracao <= melhor_filho[index]: 
+      melhor_geracao = melhor_filho[index]
+      melhor = index
+    if pior_geracao >= melhor_filho[index]:
+      pior_geracao = melhor_filho[index]
+      pior = index
+
+  return melhor, pior
 
 ### def main(args): ###
 print("Algoritmo genético 1-1")
@@ -69,6 +83,7 @@ arquivoTxt.write('Inicio do algoritmo \n\n')
 # Passo 1:
 geracao_atual = []
 melhor_filho = []
+
 for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
 
@@ -162,15 +177,9 @@ escolhido = escolheFilho(escolhido_id, populacao, fitness)
 arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolhido) + '\n')
 
 # Verificando qual é o melhor e o piro fitness de todas as gerações
-melhor_geracao, pior_geracao = melhor_filho[0], melhor_filho[0]
 melhor, pior = 0, 0
-for index in range(geracoes):
-  if melhor_geracao <= melhor_filho[index]: 
-    melhor_geracao = melhor_filho[index]
-    melhor = index
-  if pior_geracao >= melhor_filho[index]:
-    pior_geracao = melhor_filho[index]
-    pior = index
+melhor, pior = encontrarMelhorEPior(geracoes, melhor_filho)
+
 
 arquivoTxt.write('Melhor geração: '+ repr(melhor + 1) + '\n')
 arquivoTxt.write('Pior geração: '+ repr(pior + 1) + '\n')
