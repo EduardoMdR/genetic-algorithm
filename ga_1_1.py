@@ -165,10 +165,10 @@ arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolh
 melhor_geracao, pior_geracao = melhor_filho[0], melhor_filho[0]
 melhor, pior = 0, 0
 for index in range(geracoes):
-  if melhor_geracao < melhor_filho[index]: 
+  if melhor_geracao <= melhor_filho[index]: 
     melhor_geracao = melhor_filho[index]
     melhor = index
-  if pior_geracao > melhor_filho[index]:
+  if pior_geracao >= melhor_filho[index]:
     pior_geracao = melhor_filho[index]
     pior = index
 
@@ -178,27 +178,22 @@ arquivoTxt.write('Pior geração: '+ repr(pior + 1) + '\n')
 arquivoTxt.close
 
 
-# Mostrando resultado em grafico
 qtdGeracoes = []
 for index in range(geracoes):
   qtdGeracoes.append(str(index+1))
 
-# Imprimindo gráfico
+# Mostrando resultado em grafico
+# - 1º Melhor indivíduo de cada geração
 plt.figure(figsize=(12,6))
-plt.plot(qtdGeracoes, melhor_filho)
+plt.plot(qtdGeracoes, melhor_filho)                         # Plotar todas as gerações
+plt.plot(qtdGeracoes[melhor], melhor_filho[melhor], 'bo')   # Melhor indivíduo 
+plt.plot(qtdGeracoes[pior], melhor_filho[pior], 'bo')       # Pior indivíduo
 plt.ylabel("Fitness", size = 16)
 plt.xlabel("Gerações", size = 16)
 plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
 plt.grid(True)
 plt.show()
 
-## O que fazer para mellhorar os GA’s
-
-# Ao invés de 1 gráfico, vou retornar 4 por GA
-# - 1º Melhor indivíduo de cada geração
 # - 2º Média dos N melhores indivíduos da geração
 # - 3º Média dos N Piores indivíduos da geração
 # - 4º Média de todos os indivíduos de cada geração
-
-# (em cada gráfico, marcar qual é o melhor indivíduo (ou média de indivíduos) 
-# e qual o pior indivíduo dentre todas as gerações)
