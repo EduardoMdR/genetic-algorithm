@@ -49,11 +49,25 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
 # Salva valores para plotar no gráfico
 def imprimirGrafico(fitness):
   melhor = fitness[0]
-  for index in range(populacao):
+  for index in range(len(fitness)):
     if(melhor < fitness[index]): melhor = fitness[index]
 
   return melhor
 
+# Recebe os fitness da gerações e retorna o pior e o melhor elemento
+def encontrarMelhorEPior(geracoes, melhor_filho):
+  melhor_geracao, pior_geracao = melhor_filho[0], melhor_filho[0]
+  melhor, pior = 0, 0
+
+  for index in range(geracoes):
+    if melhor_geracao <= melhor_filho[index]: 
+      melhor_geracao = melhor_filho[index]
+      melhor = index
+    if pior_geracao >= melhor_filho[index]:
+      pior_geracao = melhor_filho[index]
+      pior = index
+
+  return melhor, pior
 
 ### def main(args): ###
 print("Algoritmo genético 2-2")
@@ -65,6 +79,7 @@ arquivoTxt.write('Inicio do algoritmo \n\n')
 # Passo 1:
 geracao_atual = []
 melhor_filho = []
+media = []
 for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
 
@@ -89,9 +104,9 @@ for i1 in range(geracoes):
   for filho in range(populacao):
     x, y = '', ''
     aux_idx = 0
-    for gene in (geracao_atual[filho]):
-      if(aux_idx < int(cromossomos/2)): x += str(gene)
-      else: y += str(gene)
+    for i in (geracao_atual[filho]):
+      if(aux_idx < int(cromossomos/2)): x += str(i)
+      else: y += str(i)
       aux_idx += 1
 
     x = (int(x, 2) * constante_normalizacao) - 100
@@ -99,31 +114,27 @@ for i1 in range(geracoes):
 
     eq_aux, eq_aux2 = 0, 0
     eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
-    eq_aux = (math.pow(math.sin(eq_aux),2)) -0.5
+    eq_aux = (math.pow(math.sin(eq_aux),2) - 0.5)
     eq_aux2 = 1.0 + (0.001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
     fitness.append((0.5 - (eq_aux/eq_aux2)))
     roleta += (0.5 - (eq_aux/eq_aux2))
-
+  
+  media.append(roleta / populacao)
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
   melhor_filho.append(imprimirGrafico(fitness))
+  arquivoTxt.write('Média da população:' + str(media[i1]) + '\n')
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
-  # Salvar melhor filho para proxima geração
-  ja_salvo = 1  # Utilizado para não repetir esse processo caso tenha 2 melhores individuos 
-  for index_fitness in range(populacao):
-    if((melhor_filho[i1] == fitness[index_fitness]) and ja_salvo): 
-      nova_geracao.append(geracao_atual[index_fitness])
-      nova_geracao.append(geracao_atual[index_fitness])
-      arquivoTxt.write('Tudo certo: ' + str(fitness[index_fitness])  +'\n\n\n')
-      ja_salvo = 0
-      arquivoTxt.write('nova geração: ' + str(geracao_atual[index_fitness])  +'\n\n\n')
-      # Melhorar essa parte (não está funcionando totalmente)
+
+  # Elitismo
+  melhor, lixo = encontrarMelhorEPior(geracoes, fitness)
+  nova_geracao.append(geracao_atual[melhor])
+
 
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
   arquivoTxt.write('Inicio da reprodução: \n')
-  # Percorrendo uma geração ((população/2) -1) vezes 
-  # (-1 por que, já que o melhor filho passa direto para proxima) 
-  for i2 in range(int((populacao/2) - 1)):
+  # Percorrendo uma geração população/2 vezes
+  for i2 in range(int(populacao/2)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
 
 
@@ -156,7 +167,7 @@ for i1 in range(geracoes):
     arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
 
     nova_geracao.append(pai_x)
-    nova_geracao.append(pai_y)
+    if(i2 < populacao/2): nova_geracao.append(pai_y)
 
   geracao_atual = nova_geracao
 
@@ -170,19 +181,15 @@ escolhido = escolheFilho(escolhido_id, populacao, fitness)
 arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolhido) + '\n')
 
 # Verificando qual é o melhor e o piro fitness de todas as gerações
-melhor_geracao, pior_geracao = melhor_filho[0], melhor_filho[0]
 melhor, pior = 0, 0
-for index in range(geracoes):
-  if melhor_geracao < melhor_filho[index]: 
-    melhor_geracao = melhor_filho[index]
-    melhor = index
-  if pior_geracao > melhor_filho[index]:
-    pior_geracao = melhor_filho[index]
-    pior = index
+melhor, pior = encontrarMelhorEPior(geracoes, melhor_filho)
+
+melhor_media, pior_media = 0, 0
+melhor_media, pior_media = encontrarMelhorEPior(geracoes, media)
+
 
 arquivoTxt.write('Melhor geração: '+ repr(melhor + 1) + '\n')
 arquivoTxt.write('Pior geração: '+ repr(pior + 1) + '\n')
-
 arquivoTxt.close
 
 
@@ -191,11 +198,25 @@ qtdGeracoes = []
 for index in range(geracoes):
   qtdGeracoes.append(str(index+1))
 
-# Imprimindo gráfico
 plt.figure(figsize=(12,6))
-plt.plot(qtdGeracoes, melhor_filho)
+# - 1º Melhor indivíduo de cada geração
+# Plotar todas as gerações, seu melhor e pior indivídio
+plt.plot(qtdGeracoes, melhor_filho, label='Melhor indivíduo da população')         
+plt.plot(qtdGeracoes[melhor], melhor_filho[melhor], 'bo', label='Melhor/Pior indivíduo')
+plt.plot(qtdGeracoes[pior], melhor_filho[pior], 'bo')
+
+# - 2º Média de todos os indivíduos de cada geração
+# Plotar média de todas as gerações, melhor e pior geração
+plt.plot(qtdGeracoes, media, color='#f4d03f', label='Média da população')                 
+plt.plot(qtdGeracoes[melhor_media], media[melhor_media], 'ro', label='Melhor/Pior população')
+plt.plot(qtdGeracoes[pior_media], media[pior_media], 'ro')
+
 plt.ylabel("Fitness", size = 16)
 plt.xlabel("Gerações", size = 16)
 plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
+plt.legend()
 plt.grid(True)
 plt.show()
+
+# - 3º Média dos N melhores indivíduos da geração
+# - 4º Média dos N Piores indivíduos da geração
