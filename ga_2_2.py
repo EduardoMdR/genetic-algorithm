@@ -9,6 +9,7 @@
 
 
 ### bibliotecas ###
+from platform import java_ver
 import numpy as np
 import random
 import math
@@ -60,10 +61,10 @@ def encontrarMelhorEPior(geracoes, melhor_filho):
   melhor, pior = 0, 0
 
   for index in range(geracoes):
-    if melhor_geracao <= melhor_filho[index]: 
+    if melhor_geracao < melhor_filho[index]: 
       melhor_geracao = melhor_filho[index]
       melhor = index
-    if pior_geracao >= melhor_filho[index]:
+    if pior_geracao > melhor_filho[index]:
       pior_geracao = melhor_filho[index]
       pior = index
 
@@ -72,7 +73,7 @@ def encontrarMelhorEPior(geracoes, melhor_filho):
 ### def main(args): ###
 print("Algoritmo genético 2-2")
 arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
-arquivoTxt.write('Algoritmo genético 1-1 \n')
+arquivoTxt.write('Algoritmo genético 2-2 \n')
 arquivoTxt.write('Inicio do algoritmo \n\n')
 
 
@@ -126,9 +127,24 @@ for i1 in range(geracoes):
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
 
+  # Normalização
+  # print('gereação atual: ',geracao_atual)
+  aux_geracao_atual = []
+  aux_fitness = sorted(fitness)
+  # print(fitness)
+  for index_externo in range(len(fitness)):
+    ja_foi = 0
+    for index_interno in range(len(fitness)):
+      if(aux_fitness[index_externo] == fitness[index_interno] and ja_foi == 0): 
+        aux_geracao_atual.append(geracao_atual[index_interno])
+        ja_foi = 1
+
+  geracao_atual = aux_geracao_atual
+  # print('geração atual ordenada: ', geracao_atual)
+
   # Elitismo
-  melhor, lixo = encontrarMelhorEPior(geracoes, fitness)
-  nova_geracao.append(geracao_atual[melhor])
+  # melhor, lixo = encontrarMelhorEPior(populacao, fitness)
+  # nova_geracao.append(geracao_atual[melhor])
 
 
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
@@ -167,8 +183,10 @@ for i1 in range(geracoes):
     arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
 
     nova_geracao.append(pai_x)
-    if(i2 < populacao/2): nova_geracao.append(pai_y)
+    nova_geracao.append(pai_y)
+    # if(i2 < (populacao/2)-1): nova_geracao.append(pai_y)
 
+  geracao_atual = []
   geracao_atual = nova_geracao
 
 # Verificando qual é o melhor filho da última geração
