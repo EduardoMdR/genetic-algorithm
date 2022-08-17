@@ -127,20 +127,29 @@ for i1 in range(geracoes):
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
 
-  # Normalização
-  # print('gereação atual: ',geracao_atual)
+  # Ordenando geração atual e fitness, e aplicação de normalização
   aux_geracao_atual = []
-  aux_fitness = sorted(fitness)
-  # print(fitness)
+  fitness_aux = sorted(fitness)
+  # Ordenando geração de acordo com o fitness ordenado
   for index_externo in range(len(fitness)):
     ja_foi = 0
     for index_interno in range(len(fitness)):
-      if(aux_fitness[index_externo] == fitness[index_interno] and ja_foi == 0): 
+      if(fitness_aux[index_externo] == fitness[index_interno] and ja_foi == 0): 
         aux_geracao_atual.append(geracao_atual[index_interno])
-        ja_foi = 1
+        ja_foi = 1      # Garantir que não repito valor indesejado no aux_geracao_atual
 
   geracao_atual = aux_geracao_atual
-  # print('geração atual ordenada: ', geracao_atual)
+
+  # Aplicando normalização de 100 a 1, de 1 em 1
+  normalizacao = 100
+  roleta_nor = 0
+  fitness_nor = []      # Fitness normalizado
+  for index in range(len(fitness)):
+    fitness_nor.append(normalizacao)
+    roleta_nor += fitness_nor[index]
+    normalizacao -= 1                         # Aplicando normalização de 1 em 1
+    if normalizacao == 0: normalizacao = 1    # Definindo valor mínimo
+
 
   # Elitismo
   # melhor, lixo = encontrarMelhorEPior(populacao, fitness)
@@ -155,8 +164,8 @@ for i1 in range(geracoes):
 
 
     # Passo 3:
-    pai_x, pai_x_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness)
-    pai_y, pai_y_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness)
+    pai_x, pai_x_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness_nor)
+    pai_y, pai_y_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness_nor)
 
     arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
