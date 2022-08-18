@@ -127,10 +127,14 @@ for i1 in range(geracoes):
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
 
+  ##########################################################################
+  # print('geração atual',geracao_atual)
+  # print('seu fitness',fitness)
   # Ordenando geração atual e fitness, e aplicação de normalização
   aux_geracao_atual = []
-  fitness_aux = sorted(fitness)
-  # Ordenando geração de acordo com o fitness ordenado
+  fitness_aux = sorted(fitness, reverse=True)
+  # print('fitness auxiliar', fitness_aux)
+  # # Ordenando geração de acordo com o fitness ordenado
   for index_externo in range(len(fitness)):
     ja_foi = 0
     for index_interno in range(len(fitness)):
@@ -138,22 +142,25 @@ for i1 in range(geracoes):
         aux_geracao_atual.append(geracao_atual[index_interno])
         ja_foi = 1      # Garantir que não repito valor indesejado no aux_geracao_atual
 
+  # Até aqui está correto
+  # print('geração atual auxiliar', aux_geracao_atual)
+  fitness = fitness_aux
   geracao_atual = aux_geracao_atual
 
-  # Aplicando normalização de 100 a 1, de 1 em 1
-  normalizacao = 100
-  roleta_nor = 0
-  fitness_nor = []      # Fitness normalizado
-  for index in range(len(fitness)):
-    fitness_nor.append(normalizacao)
-    roleta_nor += fitness_nor[index]
-    normalizacao -= 1                         # Aplicando normalização de 1 em 1
-    if normalizacao == 0: normalizacao = 1    # Definindo valor mínimo
+  # # Aplicando normalização de 100 a 1, de 1 em 1
+  # normalizacao = 100
+  # roleta_nor = 0
+  # fitness_nor = [(100-populacao+x+1) for x in range(populacao)]      # Fitness normalizado
 
+  # print(geracao_atual)
 
-  # Elitismo
-  # melhor, lixo = encontrarMelhorEPior(populacao, fitness)
-  # nova_geracao.append(geracao_atual[melhor])
+  # # Elitismo
+  # # melhor, lixo = encontrarMelhorEPior(populacao, fitness)
+  # nova_geracao.append(geracao_atual[0])
+  # # print(fitness_aux)
+  # # print(fitness_nor)
+  print('\n\n\n')
+  ##########################################################################
 
 
   arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
@@ -164,8 +171,8 @@ for i1 in range(geracoes):
 
 
     # Passo 3:
-    pai_x, pai_x_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness_nor)
-    pai_y, pai_y_id = escolheFilho(random.uniform(0.01,roleta), populacao, fitness_nor)
+    pai_x, pai_x_id = escolheFilho(random.uniform(1,roleta), populacao, fitness) # fitness_nor)
+    pai_y, pai_y_id = escolheFilho(random.uniform(1,roleta), populacao, fitness) # fitness_nor)
 
     arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
