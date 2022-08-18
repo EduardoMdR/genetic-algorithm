@@ -149,8 +149,12 @@ for i1 in range(geracoes):
 
   # # Aplicando normalização de 100 a 1, de 1 em 1
   # normalizacao = 100
-  # roleta_nor = 0
-  # fitness_nor = [(100-populacao+x+1) for x in range(populacao)]      # Fitness normalizado
+  roleta_nor = 0
+  fitness_nor = [(100-x) for x in range(populacao)]      # Fitness normalizado
+  for x in range(len(fitness_nor)): roleta_nor += fitness_nor[x]
+  # roleta_nor += [x for x in fitness_nor]
+  # print(fitness_nor)
+  # print(roleta_nor)
 
   # print(geracao_atual)
 
@@ -159,11 +163,11 @@ for i1 in range(geracoes):
   # nova_geracao.append(geracao_atual[0])
   # # print(fitness_aux)
   # # print(fitness_nor)
-  print('\n\n\n')
+  # print('\n\n\n')
   ##########################################################################
 
 
-  arquivoTxt.write('Roleta: ' + repr(roleta) + '\n')
+  arquivoTxt.write('Roleta: ' + repr(roleta_nor) + '\n')
   arquivoTxt.write('Inicio da reprodução: \n')
   # Percorrendo uma geração população/2 vezes
   for i2 in range(int(populacao/2)):
@@ -171,8 +175,8 @@ for i1 in range(geracoes):
 
 
     # Passo 3:
-    pai_x, pai_x_id = escolheFilho(random.uniform(1,roleta), populacao, fitness) # fitness_nor)
-    pai_y, pai_y_id = escolheFilho(random.uniform(1,roleta), populacao, fitness) # fitness_nor)
+    pai_x, pai_x_id = escolheFilho(random.uniform(1,roleta_nor), populacao, fitness_nor)
+    pai_y, pai_y_id = escolheFilho(random.uniform(1,roleta_nor), populacao, fitness_nor)
 
     arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
@@ -205,25 +209,25 @@ for i1 in range(geracoes):
   geracao_atual = []
   geracao_atual = nova_geracao
 
-# Verificando qual é o melhor filho da última geração
-escolhido_id = fitness[0]
-for index in range(populacao):
-  if(escolhido_id < fitness[index]): escolhido_id = fitness[index]
 
-arquivoTxt.write('\n\n\nMelhores individuos de cada geração:' + str(melhor_filho) + '\n\n')
-escolhido = escolheFilho(escolhido_id, populacao, fitness)
+arquivoTxt.write('\n\n\nMelhores individuos de cada geração:' + str(melhor_filho) + '\n')
+arquivoTxt.write('Média dos individuos de cada geração:' + str(media) + '\n\n')
+# Verificando qual é o melhor filho da última geração
+escolhido = escolheFilho(fitness[0], populacao, fitness)
 arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolhido) + '\n')
 
-# Verificando qual é o melhor e o piro fitness de todas as gerações
+# Verificando qual é o melhor e o pior fitness de todas as gerações
 melhor, pior = 0, 0
 melhor, pior = encontrarMelhorEPior(geracoes, melhor_filho)
 
+# Verificando qual a melhor e a pior média de todas as gerações
 melhor_media, pior_media = 0, 0
 melhor_media, pior_media = encontrarMelhorEPior(geracoes, media)
 
-
 arquivoTxt.write('Melhor geração: '+ repr(melhor + 1) + '\n')
 arquivoTxt.write('Pior geração: '+ repr(pior + 1) + '\n')
+arquivoTxt.write('Melhor média: '+ repr(melhor_media + 1) + '\n')
+arquivoTxt.write('Pior média: '+ repr(pior_media + 1) + '\n')
 arquivoTxt.close
 
 
@@ -250,7 +254,7 @@ plt.xlabel("Gerações", size = 16)
 plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig('ga_2_2.png')
 
 # - 3º Média dos N melhores indivíduos da geração
 # - 4º Média dos N Piores indivíduos da geração
