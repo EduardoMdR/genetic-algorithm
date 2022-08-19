@@ -9,7 +9,6 @@
 
 
 ### bibliotecas ###
-from platform import java_ver
 import numpy as np
 import random
 import math
@@ -46,14 +45,6 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
       else: pai[index] = 0
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
   return pai
-
-# Salva valores para plotar no gráfico
-def imprimirGrafico(fitness):
-  melhor = fitness[0]
-  for index in range(len(fitness)):
-    if(melhor < fitness[index]): melhor = fitness[index]
-
-  return melhor
 
 # Recebe os fitness da gerações e retorna o pior e o melhor elemento
 def encontrarMelhorEPior(geracoes, melhor_filho):
@@ -115,58 +106,43 @@ for i1 in range(geracoes):
 
     eq_aux, eq_aux2 = 0, 0
     eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
-    eq_aux = (math.pow(math.sin(eq_aux),2) - 0.5)
-    eq_aux2 = 1.0 + (0.001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
+    eq_aux = math.pow(math.sin(eq_aux),2) - 0.5
+    eq_aux2 = math.pow(1.0 + (0.001 * (math.pow(x,2) + math.pow(y,2))),2)
     fitness.append((0.5 - (eq_aux/eq_aux2)))
     roleta += (0.5 - (eq_aux/eq_aux2))
+
   
+  # GA 2-2
+  # Ordenando geração atual e fitness, e aplicação de normalização
+  aux_geracao_atual = []
+  fitness_aux = sorted(fitness, reverse=True)
+  # Ordenando geração de acordo com o fitness ordenado
+  for index_externo in range(len(fitness)):
+    ja_foi = 0
+    for index_interno in range(len(fitness)):
+      if(fitness_aux[index_externo] == fitness[index_interno] and ja_foi == 0):
+        aux_geracao_atual.append(geracao_atual[index_interno])
+        ja_foi = 1      # Garantir que não repito valor indesejado no aux_geracao_atual
+
+  fitness = fitness_aux
+  geracao_atual = aux_geracao_atual
+
+  # Aplicando normalização de 100 a 1, de 1 em 1
+  roleta_nor = 0
+  fitness_nor = [(100-x) for x in range(populacao)]               # Fitness normalizado
+  for x in range(len(fitness_nor)): roleta_nor += fitness_nor[x]  # Roleta normalizada
+
+  # Elitismo
+  nova_geracao.append(geracao_atual[0])
+
   media.append(roleta / populacao)
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
-  melhor_filho.append(imprimirGrafico(fitness))
+  melhor_filho.append(fitness[0])
   arquivoTxt.write('Média da população:' + str(media[i1]) + '\n')
   arquivoTxt.write('Melhor filho da população:' + str(melhor_filho[i1]) + '\n\n\n')
 
 
-  ##########################################################################
-  # print('geração atual',geracao_atual)
-  # print('seu fitness',fitness)
-  # Ordenando geração atual e fitness, e aplicação de normalização
-  aux_geracao_atual = []
-  fitness_aux = sorted(fitness, reverse=True)
-  # print('fitness auxiliar', fitness_aux)
-  # # Ordenando geração de acordo com o fitness ordenado
-  for index_externo in range(len(fitness)):
-    ja_foi = 0
-    for index_interno in range(len(fitness)):
-      if(fitness_aux[index_externo] == fitness[index_interno] and ja_foi == 0): 
-        aux_geracao_atual.append(geracao_atual[index_interno])
-        ja_foi = 1      # Garantir que não repito valor indesejado no aux_geracao_atual
-
-  # Até aqui está correto
-  # print('geração atual auxiliar', aux_geracao_atual)
-  fitness = fitness_aux
-  geracao_atual = aux_geracao_atual
-
-  # # Aplicando normalização de 100 a 1, de 1 em 1
-  # normalizacao = 100
-  roleta_nor = 0
-  fitness_nor = [(100-x) for x in range(populacao)]      # Fitness normalizado
-  for x in range(len(fitness_nor)): roleta_nor += fitness_nor[x]
-  # roleta_nor += [x for x in fitness_nor]
-  # print(fitness_nor)
-  # print(roleta_nor)
-
-  # print(geracao_atual)
-
-  # # Elitismo
-  # # melhor, lixo = encontrarMelhorEPior(populacao, fitness)
-  # nova_geracao.append(geracao_atual[0])
-  # # print(fitness_aux)
-  # # print(fitness_nor)
-  # print('\n\n\n')
-  ##########################################################################
-
-
+  # Reprodução dos indivíduos
   arquivoTxt.write('Roleta: ' + repr(roleta_nor) + '\n')
   arquivoTxt.write('Inicio da reprodução: \n')
   # Percorrendo uma geração população/2 vezes
@@ -174,15 +150,15 @@ for i1 in range(geracoes):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
 
 
-    # Passo 3:
-    pai_x, pai_x_id = escolheFilho(random.uniform(1,roleta_nor), populacao, fitness_nor)
-    pai_y, pai_y_id = escolheFilho(random.uniform(1,roleta_nor), populacao, fitness_nor)
+    # Passo 3: (Gerando filho a partir dos pais)
+    pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor)
+    pai_y, pai_y_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor)
 
     arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
 
-    # Passo 4
+    # Passo 4 (Aplicando o crossover)
     crossover = np.random.randint(100)
     if(crossover <= (taxa_cro*100)):
       qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
@@ -195,17 +171,17 @@ for i1 in range(geracoes):
       arquivoTxt.write('Não houve crossover\n')
 
 
-    # Passo 5
+    # Passo 5 (Aplicando a mutação)
     pai_x = mutacaoGene(pai_x, 'X', taxa_mut, cromossomos)
     pai_y = mutacaoGene(pai_y, 'Y', taxa_mut, cromossomos)
     arquivoTxt.write('\n')
     arquivoTxt.write('Filho 1 final: '+ repr(pai_x) + '\n')
-    arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
+    if(i2 < (populacao/2)-1): arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
 
+    # Salvando filho na nova geração
     nova_geracao.append(pai_x)
-    nova_geracao.append(pai_y)
-    # if(i2 < (populacao/2)-1): nova_geracao.append(pai_y)
-
+    if(i2 < (populacao/2)-1): nova_geracao.append(pai_y)
+    
   geracao_atual = []
   geracao_atual = nova_geracao
 
