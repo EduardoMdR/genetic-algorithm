@@ -61,6 +61,45 @@ def encontrarMelhorEPior(geracoes, melhor_filho):
 
   return melhor, pior
 
+# Recebe uma geração e retorna o fitness de cada individuo
+def funcaoAptidao(populacao, cromossomos, geracao_atual):
+  roleta = 0
+  fitness = []
+  filho = 0
+
+  for filho in range(populacao):
+    x, y = 0.0, 0.0
+    aux_x, aux_y = '', ''
+    aux_idx = 0
+    for i in (geracao_atual[filho]):
+      if(aux_idx < int(cromossomos/2)): aux_x += str(i)
+      else: aux_y += str(i)
+      aux_idx += 1
+
+    x = (int(aux_x, 2) * constante_normalizacao) - 100.0
+    y = (int(aux_y, 2) * constante_normalizacao) - 100.0
+
+    eq_aux, eq_aux2 = 0.0, 0.0
+    eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
+    eq_aux = math.pow(math.sin(eq_aux),2) - 0.5
+    eq_aux2 = math.pow(1.0 + (0.001 * (math.pow(x,2) + math.pow(y,2))),2)
+    fitness.append((0.5 - (eq_aux/eq_aux2)))
+    roleta += (0.5 - (eq_aux/eq_aux2))
+  
+  return fitness, roleta
+
+# Recebe uma opulação e ordena de acordo com o novo fitness ordenado
+def ordenarPopulacao(geracao_atual, fitness_aux, fitness):
+  aux_geracao_atual = []
+  for index_externo in range(len(fitness)):
+    ja_foi = 0
+    for index_interno in range(len(fitness)):
+      if(fitness_aux[index_externo] == fitness[index_interno] and ja_foi == 0):
+        aux_geracao_atual.append(geracao_atual[index_interno])
+        ja_foi = 1      # Garantir que não repito valor indesejado no aux_geracao_atual
+  
+  return aux_geracao_atual, fitness_aux
+
 ### def main(args): ###
 print("Algoritmo genético 2-2")
 arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
@@ -95,33 +134,18 @@ for i1 in range(geracoes):
 
 
   # Passo 2:
-  roleta = 0
-  fitness = []
-  filho = 0
+  # roleta = 0
+  # fitness = []
+  # filho = 0
 
-  for filho in range(populacao):
-    x, y = 0.0, 0.0
-    aux_x, aux_y = '', ''
-    aux_idx = 0
-    for i in (geracao_atual[filho]):
-      if(aux_idx < int(cromossomos/2)): aux_x += str(i)
-      else: aux_y += str(i)
-      aux_idx += 1
+  fitness, roleta = funcaoAptidao(populacao, cromossomos, geracao_atual)
 
-    x = (int(aux_x, 2) * constante_normalizacao) - 100.0
-    y = (int(aux_y, 2) * constante_normalizacao) - 100.0
 
-    eq_aux, eq_aux2 = 0.0, 0.0
-    eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
-    eq_aux = math.pow(math.sin(eq_aux),2) - 0.5
-    eq_aux2 = math.pow(1.0 + (0.001 * (math.pow(x,2) + math.pow(y,2))),2)
-    fitness.append((0.5 - (eq_aux/eq_aux2)))
-    roleta += (0.5 - (eq_aux/eq_aux2))
 
   
   # GA 2-2
   # Ordenando geração atual e fitness, e aplicação de normalização
-  aux_geracao_atual = []
+  # aux_geracao_atual = []
   fitness_aux = sorted(fitness, reverse=True)
   teste.append(fitness_aux[0])
 
@@ -132,25 +156,20 @@ for i1 in range(geracoes):
     print('geração atual e seu fitness    ', geracao_atual[0], fitness_aux[0])
     print('geração anterior e seu fitness ', nova_geracao[0], teste[i1])
     print('\n')
+    # nova_geracao.append(nova_geracao[0])
 
 
 
   # Ordenando geração de acordo com o fitness ordenado
-  for index_externo in range(len(fitness)):
-    ja_foi = 0
-    for index_interno in range(len(fitness)):
-      if(fitness_aux[index_externo] == fitness[index_interno] and ja_foi == 0):
-        aux_geracao_atual.append(geracao_atual[index_interno])
-        ja_foi = 1      # Garantir que não repito valor indesejado no aux_geracao_atual
-
-  fitness = fitness_aux
-  geracao_atual = aux_geracao_atual
+  geracao_atual, fitness = ordenarPopulacao(geracao_atual, fitness_aux, fitness)
+  # fitness = fitness_aux
+  # geracao_atual = aux_geracao_atual
 
 
 
   if(teste[i1] > fitness_aux[0]):
     print('Erro na geração *', i1+1)
-    print('geração atual(ord) e seu fitness',aux_geracao_atual[0], fitness[0])
+    print('geração atual(ord) e seu fitness',geracao_atual[0], fitness[0])
     print('geração anterior e seu fitness  ',nova_geracao[0], teste[i1])
 
 
@@ -167,8 +186,10 @@ for i1 in range(geracoes):
 
   
   if(teste[i1] > fitness_aux[0]):
-    print('geração nova e seu fitness      ',nova_geracao[0], teste[i1])
+    print('geração nova e seu fitness      ',nova_geracao[0], fitness_aux[0])
     print('\n')
+  # else:
+  #   nova_geracao.append(geracao_atual[0])
 
 
 
