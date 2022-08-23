@@ -52,7 +52,7 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
     else:
       aux_pai.append(pai[index])
 
-  return aux_pai
+  return np.int32(aux_pai)
 
 # Salva valores para plotar no gráfico
 def imprimirGrafico(fitness):

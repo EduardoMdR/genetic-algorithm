@@ -20,7 +20,7 @@ taxa_mut = 0.04             # Taxa que uma mutação acontece em algum gene (bit
 taxa_cro = 0.80             # Taxa que o crossover acontece na reprodução
 constante_normalizacao = 0.0000476837278899989
 # constante_normalizacao = (200 / (math.pow(2,22) - 1))
-n_ultimos = 4               # N indivíduos que serão substituidos em cada geração
+n_ultimos = 10               # N indivíduos que serão substituidos em cada geração
 
 
 ### Funções ###
@@ -36,13 +36,17 @@ def escolheFilho(pai, populacao, fitness, geracao_atual):
 
 # Verifica para cada bit, se vai ou não aconecer uma mutação
 def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
+  aux_pai = []
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
     if(mutacao <= (taxa_mut*1000)):
-      if str(pai[index]) == '0': pai[index] = 1
-      else: pai[index] = 0
+      if str(pai[index]) == '0': aux_pai.append(np.int32(1))
+      else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
-  return pai
+    else:
+      aux_pai.append(pai[index])
+
+  return np.int32(aux_pai)
 
 # Recebe os fitness da gerações e retorna o pior e o melhor elemento
 def encontrarMelhorEPior(geracoes, melhor_filho):
