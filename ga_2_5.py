@@ -152,29 +152,37 @@ for i1 in range(geracoes):
   # Percorrendo uma geração n_ultimos/2 vezes
   for i2 in range(int(n_ultimos/2)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
-
+    duplicata = 1
     ## Passo 3: Gerando filho a partir dos pais
-    pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
-    pai_y, pai_y_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
+    while duplicata:
+      duplicata = 0
+      pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
+      pai_y, pai_y_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
 
-    arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
-    arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
+      arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
+      arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
-    ## Passo 4: Aplicando o crossover
-    crossover = np.random.randint(100)
-    if(crossover <= (taxa_cro*100)):
-      qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
-      
-      pai_x = np.concatenate((pai_x[:qtd_cro], pai_y[qtd_cro:]), axis=None)
-      pai_y = np.concatenate((pai_x[qtd_cro:], pai_y[:qtd_cro]), axis=None)
+      ## Passo 4: Aplicando o crossover
+      crossover = np.random.randint(100)
+      if(crossover <= (taxa_cro*100)):
+        qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
+        
+        pai_x = np.concatenate((pai_x[:qtd_cro], pai_y[qtd_cro:]), axis=None)
+        pai_y = np.concatenate((pai_x[qtd_cro:], pai_y[:qtd_cro]), axis=None)
 
-      arquivoTxt.write('Houve crossover (no cormossomo ' + str(qtd_cro) + ')\n')
-    else:
-      arquivoTxt.write('Não houve crossover\n')
+        arquivoTxt.write('Houve crossover (no cormossomo ' + str(qtd_cro) + ')\n')
+      else:
+        arquivoTxt.write('Não houve crossover\n')
 
-    ## Passo 5: Aplicando a mutação
-    pai_x = mutacaoGene(pai_x, 'X', taxa_mut, cromossomos)
-    pai_y = mutacaoGene(pai_y, 'Y', taxa_mut, cromossomos)
+      ## Passo 5: Aplicando a mutação
+      pai_x = mutacaoGene(pai_x, 'X', taxa_mut, cromossomos)
+      pai_y = mutacaoGene(pai_y, 'Y', taxa_mut, cromossomos)
+
+      # Evitando duplicatas
+      for x in geracao_atual:
+        if(pai_x == x).all(): duplicata = 1
+        if(pai_y == x).all(): duplicata = 1
+
     arquivoTxt.write('\n')
     arquivoTxt.write('Filho 1 final: '+ repr(pai_x) + '\n')
     arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
