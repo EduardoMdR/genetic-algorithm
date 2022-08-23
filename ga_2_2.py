@@ -10,7 +10,6 @@
 
 ### bibliotecas ###
 import numpy as np
-import random
 import math
 import matplotlib.pyplot as plt
 
@@ -38,13 +37,19 @@ def escolheFilho(pai, populacao, fitness, geracao_atual):
 
 # Verifica para cada bit, se vai ou não aconecer uma mutação
 def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
+  aux_pai = []
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
     if(mutacao <= (taxa_mut*1000)):
-      if str(pai[index]) == '0': pai[index] = 1
-      else: pai[index] = 0
+      # if str(pai[index]) == '0': pai[index] = np.int32(1)
+      # else: pai[index] = np.int32(0)
+      if str(pai[index]) == '0': aux_pai.append(np.int32(1))
+      else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
-  return pai
+    else:
+      aux_pai.append(pai[index])
+
+  return aux_pai
 
 # Recebe os fitness da gerações e retorna o pior e o melhor elemento
 def encontrarMelhorEPior(geracoes, melhor_filho):
@@ -100,25 +105,22 @@ def ordenarPopulacao(geracao_atual, fitness_aux, fitness):
   
   return aux_geracao_atual, fitness_aux
 
+
 ### def main(args): ###
 print("Algoritmo genético 2-2")
 arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
 arquivoTxt.write('Algoritmo genético 2-2 \n')
 arquivoTxt.write('Inicio do algoritmo \n\n')
 
-
-# Passo 1:
+## Passo 1: Primeira geração
 geracao_atual = []
 nova_geracao = []
 melhor_filho = []
 media = []
 
-teste = []
-teste.append(0.0)
-
+# Gerando primeira geração de indivíduos
 for filho in range(populacao):
   geracao_atual.append(np.random.randint(2, size=cromossomos))
-  # nova_geracao.append(np.random.randint(2, size=cromossomos))
 
 arquivoTxt.write('População inicial:\n')
 index = 0
@@ -132,47 +134,12 @@ arquivoTxt.write('\n')
 for i1 in range(geracoes):
   arquivoTxt.write('\n\n\n#################### ' + repr(i1+1) + 'º Geração ####################\n')
 
-
-  # Passo 2:
-  # roleta = 0
-  # fitness = []
-  # filho = 0
-
+  ## Passo 2: Verifico a aptidão de cada indivíduo
   fitness, roleta = funcaoAptidao(populacao, cromossomos, geracao_atual)
 
-
-
-  
-  # GA 2-2
-  # Ordenando geração atual e fitness, e aplicação de normalização
-  # aux_geracao_atual = []
+  # E com isso, ordenar a geração atual e seu fitness
   fitness_aux = sorted(fitness, reverse=True)
-  teste.append(fitness_aux[0])
-
-
-
-  if(teste[i1] > fitness_aux[0]):
-    print('Erro na geração', i1+1)
-    print('geração atual e seu fitness    ', geracao_atual[0], fitness_aux[0])
-    print('geração anterior e seu fitness ', nova_geracao[0], teste[i1])
-    print('\n')
-    # nova_geracao.append(nova_geracao[0])
-
-
-
-  # Ordenando geração de acordo com o fitness ordenado
   geracao_atual, fitness = ordenarPopulacao(geracao_atual, fitness_aux, fitness)
-  # fitness = fitness_aux
-  # geracao_atual = aux_geracao_atual
-
-
-
-  if(teste[i1] > fitness_aux[0]):
-    print('Erro na geração *', i1+1)
-    print('geração atual(ord) e seu fitness',geracao_atual[0], fitness[0])
-    print('geração anterior e seu fitness  ',nova_geracao[0], teste[i1])
-
-
 
   # Aplicando normalização de 100 a 1, de 1 em 1
   roleta_nor = 0
@@ -183,16 +150,7 @@ for i1 in range(geracoes):
   nova_geracao = []
   nova_geracao.append(geracao_atual[0])
 
-
-  
-  if(teste[i1] > fitness_aux[0]):
-    print('geração nova e seu fitness      ',nova_geracao[0], fitness_aux[0])
-    print('\n')
-  # else:
-  #   nova_geracao.append(geracao_atual[0])
-
-
-
+  # Imprimindo resultados no arquivoTxt
   media.append(roleta / populacao)
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
   melhor_filho.append(fitness[0])
@@ -206,16 +164,14 @@ for i1 in range(geracoes):
   for i2 in range(int(populacao/2)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
 
-
-    # Passo 3: (Gerando filho a partir dos pais)
+    ## Passo 3: Gerando filho a partir dos pais
     pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
     pai_y, pai_y_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
 
     arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
     arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
-
-    # Passo 4 (Aplicando o crossover)
+    ## Passo 4: Aplicando o crossover
     crossover = np.random.randint(100)
     if(crossover <= (taxa_cro*100)):
       qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
@@ -228,7 +184,7 @@ for i1 in range(geracoes):
       arquivoTxt.write('Não houve crossover\n')
 
 
-    # Passo 5 (Aplicando a mutação)
+    # Passo 5: Aplicando a mutação
     pai_x = mutacaoGene(pai_x, 'X', taxa_mut, cromossomos)
     pai_y = mutacaoGene(pai_y, 'Y', taxa_mut, cromossomos)
     arquivoTxt.write('\n')
@@ -291,6 +247,3 @@ plt.savefig('ga_2_2.png')
 
 # - 3º Média dos N melhores indivíduos da geração
 # - 4º Média dos N Piores indivíduos da geração
-# print(teste)
-# print(teste1)
-# if teste == teste1 : print('deu bom')
