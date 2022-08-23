@@ -170,13 +170,27 @@ for i1 in range(geracoes):
         arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
         arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
+        
         ## Passo 4: Aplicando o crossover
+        template = np.random.randint(2, size=cromossomos)
+        
         crossover = np.random.randint(100)
         if(crossover <= (taxa_cro*100)):
-          qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
-          pai_x = np.concatenate((pai_x[:qtd_cro], pai_y[qtd_cro:]), axis=None)
-          pai_y = np.concatenate((pai_x[qtd_cro:], pai_y[:qtd_cro]), axis=None)
-          arquivoTxt.write('Houve crossover (no cormossomo ' + str(qtd_cro) + ')\n')
+          aux_pai_x, aux_pai_y = [], []
+          index = 0
+          for x in template:
+            if str(x) == '0': 
+              aux_pai_x.append(pai_x[index])
+              aux_pai_y.append(pai_y[index])
+            else:
+              aux_pai_x.append(pai_y[index])
+              aux_pai_y.append(pai_x[index])
+            index += 1
+          
+          pai_x = np.concatenate(aux_pai_x, axis=None)
+          pai_y = np.concatenate(aux_pai_y, axis=None)
+
+          arquivoTxt.write('Houve crossover (utilizando template ' + str(template) + ')\n')
         else:
           arquivoTxt.write('Não houve crossover\n')
 
