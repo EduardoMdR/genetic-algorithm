@@ -41,8 +41,6 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
     if(mutacao <= (taxa_mut*1000)):
-      # if str(pai[index]) == '0': pai[index] = np.int32(1)
-      # else: pai[index] = np.int32(0)
       if str(pai[index]) == '0': aux_pai.append(np.int32(1))
       else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')

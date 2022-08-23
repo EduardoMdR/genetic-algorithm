@@ -42,13 +42,17 @@ def escolheFilho(pai, populacao, fitness):
 
 # Verifica para cada bit, se vai ou não aconecer uma mutação
 def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
+  aux_pai = []
   for index in range(cromossomos):
     mutacao = np.random.randint(1000)
     if(mutacao <= (taxa_mut*1000)):
-      if str(pai[index]) == '0': pai[index] = 1
-      else: pai[index] = 0
+      if str(pai[index]) == '0': aux_pai.append(np.int32(1))
+      else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
-  return pai
+    else:
+      aux_pai.append(pai[index])
+
+  return aux_pai
 
 # Salva valores para plotar no gráfico
 def imprimirGrafico(fitness):
@@ -178,7 +182,7 @@ arquivoTxt.write('\n\n\nMelhores individuos de cada geração:' + str(melhor_fil
 escolhido = escolheFilho(escolhido_id, populacao, fitness)
 arquivoTxt.write('Individuo mais qualificado (última geração): '+ repr(escolhido) + '\n')
 
-# Verificando qual é o melhor e o piro fitness de todas as gerações
+# Verificando qual é o melhor e o pior fitness de todas as gerações
 melhor, pior = 0, 0
 melhor, pior = encontrarMelhorEPior(geracoes, melhor_filho)
 
@@ -214,7 +218,7 @@ plt.xlabel("Gerações", size = 16)
 plt.title("Melhores individuos de cada geração", fontdict={'weight': 'bold','size': 18})
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig('ga_1_1.png')
 
 # - 3º Média dos N melhores indivíduos da geração
 # - 4º Média dos N Piores indivíduos da geração
