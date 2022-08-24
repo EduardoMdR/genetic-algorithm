@@ -38,8 +38,8 @@ def escolheFilho(pai, populacao, fitness, geracao_atual):
 def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
   aux_pai = []
   for index in range(cromossomos):
-    mutacao = np.random.randint(1000)
-    if(mutacao <= (taxa_mut*1000)):
+    mutacao = np.random.randint(100)
+    if(mutacao < (taxa_mut*100)):
       if str(pai[index]) == '0': aux_pai.append(np.int32(1))
       else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
@@ -167,8 +167,8 @@ for i1 in range(geracoes):
       arquivoTxt.write('PaiY ('+ repr(pai_y_id+1) +') escolhido: ' + repr(pai_y) + '\n')
 
       ## Passo 4: Aplicando o crossover
-      crossover = np.random.randint(100)
-      if(crossover <= (taxa_cro*100)):
+      crossover = np.random.randint(10)
+      if(crossover < (taxa_cro*10)):
         qtd_cro = np.random.randint(low=1, high=cromossomos)      # O local que vai acontecer o crossover
         
         pai_x = np.concatenate((pai_x[:qtd_cro], pai_y[qtd_cro:]), axis=None)
