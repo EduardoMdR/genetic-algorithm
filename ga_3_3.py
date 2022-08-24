@@ -22,13 +22,12 @@ taxa_mut = 0.04             # Taxa que uma mutação acontece em algum gene (bit
 taxa_cro = 0.80             # Taxa que o crossover acontece na reprodução
 constante_normalizacao = 0.0000476837278899989
 # constante_normalizacao = (200 / (math.pow(2,22) - 1))
-n_ultimos =  4              # N indivíduos que serão substituidos em cada geração
+n_ultimos = 10              # N indivíduos que serão substituidos em cada geração
 seleciona_mut = 0.3         # Chace de operação mutação ser selecionada
 seleciona_cro = 0.7         # Chance do crossover ser selecionado
 
 # Variável utilizada para gerenciar o quanto cada operação vai ter que mudar a cada geração
 interpolacao_peso = 0.2 / geracoes
-print(interpolacao_peso)
 
 
 ### Funções ###
@@ -37,20 +36,24 @@ def escolheFilho(pai, populacao, fitness, geracao_atual):
   aux_roleta = 0.0
   for index in range(populacao):
     aux_roleta += float(fitness[index])
-    if(pai <= aux_roleta):
+    if(pai < aux_roleta):
       pai = geracao_atual[index]
       break
   return pai, index
 
 # Verifica para cada bit, se vai ou não aconecer uma mutação
 def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
+  aux_pai = []
   for index in range(cromossomos):
-    mutacao = np.random.randint(1000)
-    if(mutacao <= (taxa_mut*1000)):
-      if str(pai[index]) == '0': pai[index] = 1
-      else: pai[index] = 0
+    mutacao = np.random.randint(100)
+    if(mutacao < (taxa_mut*100)):
+      if str(pai[index]) == '0': aux_pai.append(np.int32(1))
+      else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
-  return pai
+    else:
+      aux_pai.append(pai[index])
+
+  return np.int32(aux_pai)
 
 # Recebe os fitness da gerações e retorna o pior e o melhor elemento
 def encontrarMelhorEPior(geracoes, melhor_filho):
@@ -133,6 +136,7 @@ arquivoTxt.write('\n')
 # Montando as gerações
 for i1 in range(geracoes):
   nova_geracao = []
+  crossover = 0
   arquivoTxt.write('\n\n\n#################### ' + repr(i1+1) + 'º Geração ####################\n')
 
   ## Passo 2: Verifico a aptidão de cada indivíduo
@@ -158,7 +162,7 @@ for i1 in range(geracoes):
   arquivoTxt.write('Roleta: ' + repr(roleta_nor) + '\n')
   arquivoTxt.write('Inicio da reprodução: \n')
   # Percorrendo uma geração n_ultimos/2 vezes
-  for i2 in range(int(n_ultimos/2)):
+  for i2 in range(int(n_ultimos)):
     arquivoTxt.write('\n' + repr(i2+1) + 'º pais a serem escolhidos: \n')
     duplicata = 1
 
@@ -168,7 +172,7 @@ for i1 in range(geracoes):
 
       # Selecionando qual dos dois operadores vai ser utilizado
       op_selecionado = random.uniform(0.0, 1.0)
-      if(op_selecionado <= (seleciona_cro)):
+      if(op_selecionado < (seleciona_cro)):
         pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
         pai_y, pai_y_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
         arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
@@ -176,8 +180,8 @@ for i1 in range(geracoes):
 
         ## Passo 4: Aplicando o crossover
         template = np.random.randint(2, size=cromossomos)
-        crossover = np.random.randint(100)
-        if(crossover <= (taxa_cro*100)):
+        crossover = np.random.randint(10)
+        if(crossover < (taxa_cro*10)):
           aux_pai_x, aux_pai_y = [], []
           index = 0
           for x in template:
@@ -198,6 +202,7 @@ for i1 in range(geracoes):
 
       else:
         pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
+        pai_y = []
         arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
 
         ## Passo 5: Aplicando a mutação
@@ -206,17 +211,20 @@ for i1 in range(geracoes):
       # Evitando duplicatas
       for x in geracao_atual:
         if(pai_x == x).all(): duplicata = 1
-        if(op_selecionado <= (seleciona_cro)):
+        if(op_selecionado < (seleciona_cro)):
           if(pai_y == x).all(): duplicata = 1
 
     # Salvando filho na nova geração
     nova_geracao.append(pai_x)
     arquivoTxt.write('\n')
     arquivoTxt.write('Filho 1 final: '+ repr(pai_x) + '\n')
-    if(crossover <= (taxa_cro*100) and len(nova_geracao) < n_ultimos):
+    if(len(pai_y) and len(nova_geracao) < n_ultimos):
       nova_geracao.append(pai_y)
       arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
   
+    # Acaba o loop se gerou todos os n_ultimos novos filhos
+    if(len(nova_geracao) == n_ultimos): break
+
   # Substituindo os n piores indivíduos
   index = 0
   for x in range(n_ultimos): geracao_atual.pop()
