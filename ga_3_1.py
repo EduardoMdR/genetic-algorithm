@@ -31,7 +31,7 @@ def escolheFilho(pai, populacao, fitness, geracao_atual):
   aux_roleta = 0.0
   for index in range(populacao):
     aux_roleta += float(fitness[index])
-    if(pai <= aux_roleta):
+    if(pai < aux_roleta):
       pai = geracao_atual[index]
       break
   return pai, index
@@ -41,7 +41,7 @@ def mutacaoGene(pai, qualPai, taxa_mut, cromossomos):
   aux_pai = []
   for index in range(cromossomos):
     mutacao = np.random.randint(100)
-    if(mutacao <= (taxa_mut*100)):
+    if(mutacao < (taxa_mut*100)):
       if str(pai[index]) == '0': aux_pai.append(np.int32(1))
       else: aux_pai.append(np.int32(1))
       arquivoTxt.write('Aconteceu mutação em pai(' + repr(qualPai) + ') : '+ repr(index+1) + '\n')
@@ -185,6 +185,7 @@ for i1 in range(geracoes):
 
       else:
         pai_x, pai_x_id = escolheFilho(np.random.randint(roleta_nor), populacao, fitness_nor, geracao_atual)
+        pai_y = []
         arquivoTxt.write('PaiX ('+ repr(pai_x_id+1) +') escolhido: ' + repr(pai_x) + '\n')
 
         ## Passo 5: Aplicando a mutação
@@ -193,14 +194,14 @@ for i1 in range(geracoes):
       # Evitando duplicatas
       for x in geracao_atual:
         if(pai_x == x).all(): duplicata = 1
-        if(op_selecionado <= (seleciona_cro)):
+        if(op_selecionado < (seleciona_cro)):
           if(pai_y == x).all(): duplicata = 1
 
     # Salvando filho na nova geração
     nova_geracao.append(pai_x)
     arquivoTxt.write('\n')
     arquivoTxt.write('Filho 1 final: '+ repr(pai_x) + '\n')
-    if(crossover < (taxa_cro*10) and len(nova_geracao) < n_ultimos):
+    if(len(pai_y) and len(nova_geracao) < n_ultimos):
       nova_geracao.append(pai_y)
       arquivoTxt.write('Filho 2 final: '+ repr(pai_y) + '\n')
     
