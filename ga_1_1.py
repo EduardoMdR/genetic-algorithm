@@ -77,6 +77,33 @@ def encontrarMelhorEPior(geracoes, melhor_filho):
 
   return melhor, pior
 
+# Recebe uma geração e retorna o fitness de cada individuo
+def funcaoAptidao(populacao, cromossomos, geracao_atual):
+  roleta = 0
+  fitness = []
+  filho = 0
+
+  for filho in range(populacao):
+    x, y = 0.0, 0.0
+    aux_x, aux_y = '', ''
+    aux_idx = 0
+    for i in (geracao_atual[filho]):
+      if(aux_idx < int(cromossomos/2)): aux_x += str(i)
+      else: aux_y += str(i)
+      aux_idx += 1
+
+    x = (int(aux_x, 2) * constante_normalizacao) - 100.0
+    y = (int(aux_y, 2) * constante_normalizacao) - 100.0
+
+    eq_aux, eq_aux2 = 0.0, 0.0
+    eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
+    eq_aux = math.pow(math.sin(eq_aux),2) - 0.5
+    eq_aux2 = math.pow(1.0 + (0.001 * (math.pow(x,2) + math.pow(y,2))),2)
+    fitness.append((0.5 - (eq_aux/eq_aux2)))
+    roleta += (0.5 - (eq_aux/eq_aux2))
+  
+  return fitness, roleta
+
 ### def main(args): ###
 print("Algoritmo genético 1-1")
 arquivoTxt = open('resposta.txt', 'w', encoding='utf-8')
@@ -106,26 +133,7 @@ for i1 in range(geracoes):
 
 
   # Passo 2:
-  roleta = 0
-  fitness = []
-
-  for filho in range(populacao):
-    x, y = '', ''
-    aux_idx = 0
-    for i in (geracao_atual[filho]):
-      if(aux_idx < int(cromossomos/2)): x += str(i)
-      else: y += str(i)
-      aux_idx += 1
-
-    x = (int(x, 2) * constante_normalizacao) - 100
-    y = (int(y, 2) * constante_normalizacao) - 100
-
-    eq_aux, eq_aux2 = 0, 0
-    eq_aux = math.pow((math.pow(x,2) + math.pow(y,2)), 0.5)
-    eq_aux = (math.pow(math.sin(eq_aux),2) - 0.5)
-    eq_aux2 = 1.0 + (0.001 * (math.pow((math.pow(x,2) + math.pow(y,2)),2)))
-    fitness.append((0.5 - (eq_aux/eq_aux2)))
-    roleta += (0.5 - (eq_aux/eq_aux2))
+  fitness, roleta = funcaoAptidao(populacao, cromossomos, geracao_atual)
   
   media.append(roleta / populacao)
   arquivoTxt.write('Fitness de cada filho: ' + repr(fitness) + '\n')
