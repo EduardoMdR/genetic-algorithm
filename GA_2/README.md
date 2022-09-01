@@ -101,7 +101,6 @@ Quanto maior são os N_últimos_eliminados, mais rapido minha média vai converg
 
 <hr />
 
-
 ### N últimos sem duplicatas:
 Tenho um resultado melhor que o GA2-3, porém demora muito para chegar em uma máximo local, e quando chego não saio dele.
 
@@ -115,4 +114,20 @@ Ao aumentar os n eliminados, não tenho um bom aproveitamento do algoritmo, pois
 ![image](https://user-images.githubusercontent.com/54919290/187825507-ec9c7eac-a8a4-4397-a5f0-93fa08261332.png)
 ![image](https://user-images.githubusercontent.com/54919290/187825566-79539910-8c50-45b8-a007-5017d56cf0a3.png)
 
+<hr />
+
+### Arrumando taxas de mutação e crossover:
+Como a reprodução acontece em uma taxa menor, precisamos aumentar a taxa de mutação e crossover para conseguirmos aconpanhar o algoritmo sem ter que passar muitas gerações.
+
+Aumentando os n_ultimos é possivel encontrar o melhor resultado obtido mais cedo
+
+> População: 100, Gerações: 120 e 220, n_eliminados: 6
+![image](https://user-images.githubusercontent.com/54919290/187826163-6fce2fd2-1524-4d42-b0a8-ce3067e4801d.png)
+![image](https://user-images.githubusercontent.com/54919290/187826254-b1d4a7b3-0e05-431e-af8e-109c5f967391.png)
+
+> População: 100, gerações 120, n_eliminados: 20, 60, 60 e 90
+![image](https://user-images.githubusercontent.com/54919290/187826468-68ad7d86-1fc4-4e2d-a4e1-8571c9d78ccb.png)
+![image](https://user-images.githubusercontent.com/54919290/187826559-2b066bf6-8583-416b-bcf0-c201f65fe135.png)
+![image](https://user-images.githubusercontent.com/54919290/187826653-15077092-89bc-4cb5-af77-71534bf5115b.png)
+![image](https://user-images.githubusercontent.com/54919290/187826705-77d71ccc-6863-410c-8e5a-82e8cf09d8c3.png)
 
