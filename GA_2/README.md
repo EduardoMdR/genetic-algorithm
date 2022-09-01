@@ -101,3 +101,18 @@ Quanto maior são os N_últimos_eliminados, mais rapido minha média vai converg
 
 <hr />
 
+
+### N últimos sem duplicatas:
+Tenho um resultado melhor que o GA2-3, porém demora muito para chegar em uma máximo local, e quando chego não saio dele.
+
+Ao aumentar os n eliminados, não tenho um bom aproveitamento do algoritmo, pois suas taxas de mutação e crossover não estão adaptadas para as novas funcionalidades
+
+> População: 100, Gerações: 260 e 300, n_eliminados: 6
+![image](https://user-images.githubusercontent.com/54919290/187825121-aeaf556a-f42d-4f0b-9f26-43e0cab7f5f2.png)
+![image](https://user-images.githubusercontent.com/54919290/187825213-16fb793d-1034-4868-8fd5-b7ed6ac209a6.png)
+
+> População: 100, gerações 120, n_eliminados: 40 e 90
+![image](https://user-images.githubusercontent.com/54919290/187825507-ec9c7eac-a8a4-4397-a5f0-93fa08261332.png)
+![image](https://user-images.githubusercontent.com/54919290/187825566-79539910-8c50-45b8-a007-5017d56cf0a3.png)
+
+
