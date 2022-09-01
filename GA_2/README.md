@@ -42,3 +42,13 @@
 
 
 ## Resultados obtidos
+
+Normalização Linear: 
+Com a normalização linear, a média da população tende a subir, o melhor indivíduo tende a ser menos inconstante que o GA1-1, já que os melhores indivíduos tem maiores chance de reproduzir que no GA1-1
+
+> população 100, Gerações 40
+![image](https://user-images.githubusercontent.com/54919290/187817322-67b21af4-e996-4907-ad11-3f3a6b3155b3.png)
+![image](https://user-images.githubusercontent.com/54919290/187817596-361b1762-94ab-49e0-8075-5f5089918d10.png)
+
+
+<hr />
