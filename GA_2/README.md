@@ -46,7 +46,7 @@
 ### Normalização Linear: 
 Com a normalização linear, a média da população tende a subir, o melhor indivíduo tende a ser menos inconstante que o GA1-1, já que os melhores indivíduos tem maiores chance de reproduzir que no GA1-1.
 
-Se minha população começar a convergir para a solução ideal, quer dizer que vou ter indivíduos mais proximos de minha solução ideia (isso pode significar que tenho diversos indivíduos iguais ou bem semelhantes, o que explica o fato de mesmo sem elitismo, o melhor indivíduo se mantem)
+Se minha população começar a convergir para a solução ideal, quer dizer que vou ter indivíduos mais próximos de minha solução ideia (isso pode significar que tenho diversos indivíduos iguais ou bem semelhantes, o que explica o fato de mesmo sem elitismo, o melhor indivíduo se mantem)
 
 Se eu tenho uma quantidade de indivíduos grande, a curva de melhor indivíduo acaba ficando mais constante (isso não é uma regra, mas normalmente ocorre) quanto maior esse número, menos variações ocorrem, mas elas ocorrem.
 
@@ -80,4 +80,24 @@ Ao aumentar a quantidade de indivíduos, a média se assemelha do GA2-2
 > População: 200, gerações: 40 e População: 500, gerações: 160
 ![image](https://user-images.githubusercontent.com/54919290/187821694-7e7cdcee-7dba-4a58-8da2-4755e3884573.png)
 ![image](https://user-images.githubusercontent.com/54919290/187822109-76de8ab3-b620-4e02-97be-692c66f7eeee.png)
+
+<hr />
+
+### N últimos:
+Eliminando os N últimos, a média da população cresce em uma proporção quase constante, porém acabo ficando preso em um máximo local.
+
+Quanto maior são os N_últimos_eliminados, mais rapido minha média vai convergir, porém agora em um máximo local, mais próximo do máximo global
+
+> População: 100, gerações 40, e 120 e 180, n_eliminados: 6
+![image](https://user-images.githubusercontent.com/54919290/187823791-2a231ce5-cbe6-4c70-96fe-e250b8eb5268.png)
+![image](https://user-images.githubusercontent.com/54919290/187823982-afb10f90-3fa2-4cf9-8f81-388f10b21abc.png)
+![image](https://user-images.githubusercontent.com/54919290/187824091-9b485152-1281-42d1-a354-364b01d25458.png)
+
+> População: 100, gerações 120, n_eliminados: 20 e 40 e 60 e 90
+![image](https://user-images.githubusercontent.com/54919290/187824379-0741a5fb-5301-4d3c-b79b-5f0480f77f76.png)
+![image](https://user-images.githubusercontent.com/54919290/187824467-c22bfda4-fcbf-424e-8beb-3056708a357c.png)
+![image](https://user-images.githubusercontent.com/54919290/187824507-ae7d4f7e-cced-442e-a08a-5629d15377e4.png)
+![image](https://user-images.githubusercontent.com/54919290/187824606-3e9ef913-3a20-4ac4-abbb-033e2df360a4.png)
+
+<hr />
 
