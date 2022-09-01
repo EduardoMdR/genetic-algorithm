@@ -64,5 +64,20 @@ Se fizer a normalização menos significante (ex. de 999 até 900 de 1 em 1), o 
 ![image](https://user-images.githubusercontent.com/54919290/187819416-2d2ec14e-1e04-408a-a908-adf621286602.png)
 ![image](https://user-images.githubusercontent.com/54919290/187820033-c0edbdff-8fdc-4bcd-a971-c53b9dd0285c.png)
 
-
 <hr />
+
+### Elitismo:
+Com o Elitismo a média da população aparenta estar subindo um pouco mais (em quase todos os casos rodados, as médias aparentam estar subindo um pouco mais, porém estabilizando em algum ponto)
+
+Ao aumentar a quantidade de indivíduos, a média se assemelha do GA2-2
+> População: 100, Gerações: 40
+![image](https://user-images.githubusercontent.com/54919290/187820964-42fd6b9f-7c7a-4c69-ad53-6bfa86e3684a.png)
+
+> População: 100, Gerações: 80 e 120
+![image](https://user-images.githubusercontent.com/54919290/187821227-7812bd0a-3d26-4b7c-b34e-5fcadb9424c1.png)
+![image](https://user-images.githubusercontent.com/54919290/187821325-8d311061-d357-488d-8032-76f282cc1610.png)
+
+> População: 200, gerações: 40 e População: 500, gerações: 160
+![image](https://user-images.githubusercontent.com/54919290/187821694-7e7cdcee-7dba-4a58-8da2-4755e3884573.png)
+![image](https://user-images.githubusercontent.com/54919290/187822109-76de8ab3-b620-4e02-97be-692c66f7eeee.png)
+
