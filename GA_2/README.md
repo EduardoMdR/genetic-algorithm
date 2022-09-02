@@ -64,6 +64,9 @@ Se fizer a normalização menos significante (ex. de 999 até 900 de 1 em 1), o 
 ![image](https://user-images.githubusercontent.com/54919290/187819416-2d2ec14e-1e04-408a-a908-adf621286602.png)
 ![image](https://user-images.githubusercontent.com/54919290/187820033-c0edbdff-8fdc-4bcd-a971-c53b9dd0285c.png)
 
+> População: 100, gerações: 120 sem duplicatas
+![image](https://user-images.githubusercontent.com/54919290/188035798-edb928a8-8b28-4ff2-8732-ea76a5b89a9b.png)
+
 <hr />
 
 ### Elitismo:
@@ -80,6 +83,19 @@ Ao aumentar a quantidade de indivíduos, a média se assemelha do GA2-2
 > População: 200, gerações: 40 e População: 500, gerações: 160
 ![image](https://user-images.githubusercontent.com/54919290/187821694-7e7cdcee-7dba-4a58-8da2-4755e3884573.png)
 ![image](https://user-images.githubusercontent.com/54919290/187822109-76de8ab3-b620-4e02-97be-692c66f7eeee.png)
+
+<hr />
+
+### Elitismo: sem duplicatas
+
+> População: 100, Gerações: 40 e 120 e 120
+![image](https://user-images.githubusercontent.com/54919290/188034639-3102514b-c6e3-42b8-8fdd-09a0013ef2b0.png)
+![image](https://user-images.githubusercontent.com/54919290/188034723-3c18c437-6354-43a1-8831-9f11f8239b7d.png)
+![image](https://user-images.githubusercontent.com/54919290/188034836-aedfaca9-27e0-486d-9772-aa3042d14ac4.png)
+
+> População: 200, Gerações: 120 e População: 500, gerações: 120
+![image](https://user-images.githubusercontent.com/54919290/188035054-85cb3a24-e8d8-4c9b-9244-cc1fd59d651f.png)
+![image](https://user-images.githubusercontent.com/54919290/188035546-dbf00c47-b30a-4370-ad64-0459be0f3bae.png)
 
 <hr />
 
