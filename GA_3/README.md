@@ -55,3 +55,16 @@ Teoricamente não saberia dizer se era pra ser melhor que o GA2-5, ele propõe r
 
 <hr />
 
+### Crossover Uniforme:
+O crossover uniforma aparenta auxiliar no problema desenvolvido (F6 binary). Ao utilizar poucos n eliminados, não se percebe nenhuma diferença para o algoritmo anterios GA3-1, porém, ao aumentar a quantidade de indivíduos eliminados, o crossover tem mantido a média da população bem alta (o que não estava acontecendo nos algoritmos anteriores ao sofrer as mesmas alterações)
+
+> População: 100, Gerações: 120 e 220, n_eliminados: 6
+![image](https://user-images.githubusercontent.com/54919290/188052475-14d7b5a2-7491-410e-b49a-afc70ad94935.png)
+![image](https://user-images.githubusercontent.com/54919290/188052571-20272e40-4316-4079-9743-b44ece87e872.png)
+
+> População: 100, gerações 120, n_eliminados: 20, 60, 90 e 98
+![image](https://user-images.githubusercontent.com/54919290/188053433-fbeec8ea-3606-4144-8ff3-c166870a71e2.png)
+![image](https://user-images.githubusercontent.com/54919290/188053503-98b1e8cf-0cb8-4180-af4f-e3d52dabc28a.png)
+![image](https://user-images.githubusercontent.com/54919290/188053585-bab9706e-2766-45ba-b836-d06c0fa46f16.png)
+![image](https://user-images.githubusercontent.com/54919290/188053719-964ea859-a215-4aca-930f-287179ee1f02.png)
+
