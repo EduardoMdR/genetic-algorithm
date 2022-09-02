@@ -68,3 +68,21 @@ O crossover uniforma aparenta auxiliar no problema desenvolvido (F6 binary). Ao 
 ![image](https://user-images.githubusercontent.com/54919290/188053585-bab9706e-2766-45ba-b836-d06c0fa46f16.png)
 ![image](https://user-images.githubusercontent.com/54919290/188053719-964ea859-a215-4aca-930f-287179ee1f02.png)
 
+<hr />
+
+### Interpolação de Peso de Operador:
+Aplicando a interpolção dos pesos, em quase todos os testes, o melhor indivíduo estava em sua grande maioria nas últimas gerações, diferente dos anteriores que podiam ou não estar nas últimas gerações.
+
+Quando os N últimos são aumentados, essa caracteristica vai sumindo aos poucos
+
+> População: 100, Gerações: 120 e 220, n_eliminados: 6
+![image](https://user-images.githubusercontent.com/54919290/188057781-f5716e45-dc3d-4f3a-a629-3b612f5a424b.png)
+![image](https://user-images.githubusercontent.com/54919290/188057875-f5f900ea-8740-452e-9376-744adeca2265.png)
+
+
+> População: 100, gerações 120, n_eliminados: 20, 60, 90 e 98
+![image](https://user-images.githubusercontent.com/54919290/188058884-aba3e82b-e2be-4583-a7d7-2094cbdedbf9.png)
+![image](https://user-images.githubusercontent.com/54919290/188059031-a887591b-8689-44ca-9b35-562747b43450.png)
+![image](https://user-images.githubusercontent.com/54919290/188059209-c08c882c-dd8b-4301-971b-9280ce147941.png)
+![image](https://user-images.githubusercontent.com/54919290/188059327-5f703acf-989c-4600-9a99-f01c5a3f66e1.png)
+
