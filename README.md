@@ -10,39 +10,12 @@
 
 <br />
 
-## ideia do algoritmo 1.1 (John Holland)
+### ideia do algoritmo desenvolvido
 
-- Técnica de representação: Representação binária 44bits
-- Tecnica de inicialização: randômica
-- Eliminação: elimina todos
-- Reprodução: Substitui a geração
-- Seleção de pais: Roleta
-- Fitness (grau de adaptação): ajuste é avaliação
+A ideia desse repósitorio é, demonstrar e documentar, o aprendizado obtido relacionado aos algoritmos genéticos que serão utilizados para aprendizado no futuro (Computação Evolutiva).
 
-> Populaçao inicial: 100 elementos; Total de gerações: 40
+### O que são os algoritmos genéticos
+...
 
-Módulo de reprodução:
-- Seleção do operador: Primeiro operador
-- Operadores: Crossover de um ponto com mutação
-- Taxa de mutação: 0,008
-- taxa de crossover: 0,65
-
-<br />
-
-## ideia do algoritmo 2.2
-
-- Técnica de representação: Representação binária 44bits
-- Tecnica de inicialização: randômica
-- Eliminação: elimina todos
-- Reprodução: Substitui a geração ><b>com elitismo</b><
-- Seleção de pais: Roleta
-- Fitness (grau de adaptação): ajuste é avaliação ><b>Normalização linear 100 a 1 de 1 em 1</b><
-
-> Populaçao inicial: 100 elementos; Total de gerações: 40
-
-Módulo de reprodução:
-- Seleção do operador: Primeiro operador
-- Operadores: Crossover de um ponto com mutação
-- Taxa de mutação: 0,008
-- taxa de crossover: 0,65
-
+### Em quais casos utilizar
+...
