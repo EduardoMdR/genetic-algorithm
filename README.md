@@ -19,3 +19,12 @@ A ideia desse repósitorio é, demonstrar e documentar, o aprendizado obtido rel
 
 ### Em quais casos utilizar
 ...
+
+### Aplicações de cada algoritmo
+- o que a normalização linear implica no GA?
+
+...
+
+- O que o Elitismo implica no GA?
+
+...
