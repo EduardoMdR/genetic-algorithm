@@ -28,3 +28,14 @@ A ideia desse repósitorio é, demonstrar e documentar, o aprendizado obtido rel
 - O que o Elitismo implica no GA?
 
 ...
+
+
+Pegar mudanças dos algoritmos e ver possíveis cenários
+
+- Em que momento são bons
+
+- Em qual momento são ruins
+
+- Entender oq cada operador e o que cada parâmetro representa em um mecanismo de reprodução
+
+- A partir de resultados empíricos, tentar entender
